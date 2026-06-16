@@ -1,0 +1,1852 @@
+[
+  {
+    "task_id": 0,
+    "artists": [
+      "Zara Voss",
+      "The Riven",
+      "Celeste Nweke",
+      "Pedro Salvaje",
+      "Yuki Tanase"
+    ],
+    "artist_attributes": {
+      "Zara Voss": {
+        "genre": "Pop",
+        "decade": "2010s",
+        "nationality": "the UK",
+        "award": "Grammy"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Celeste Nweke": {
+        "genre": "R&B",
+        "decade": "2000s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Pedro Salvaje": {
+        "genre": "Reggae",
+        "decade": "1990s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      }
+    },
+    "question": "Which artist debuted in the 2000s?",
+    "answer": "Celeste Nweke",
+    "candidates": [
+      "The Riven",
+      "Celeste Nweke",
+      "Yuki Tanase",
+      "Zara Voss",
+      "Pedro Salvaje"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist who debuted in the 2010s did not win the Latin Grammy.",
+      "agent_01": "The Folk artist did not debut in the 1980s.",
+      "agent_02": "Celeste Nweke did not debut in the 1980s.",
+      "agent_03": "The artist who debuted in the 2000s did not win the Grammy.",
+      "agent_04": "Celeste Nweke did not win the ARIA Award.",
+      "agent_05": "The Rock artist did not win the Latin Grammy.",
+      "agent_06": "The Riven is not from Brazil.",
+      "agent_07": "The Rock artist did not debut in the 1990s.",
+      "agent_08": "Pedro Salvaje did not debut in the 1960s.",
+      "agent_09": "Zara Voss is not from Australia.",
+      "agent_10": "The Reggae artist did not debut in the 1980s.",
+      "agent_11": "Pedro Salvaje does not play Rock.",
+      "agent_12": "The artist who debuted in the 1990s did not win the NHK Award.",
+      "agent_13": "Pedro Salvaje did not win the NHK Award.",
+      "agent_14": "The Pop artist did not win the Latin Grammy.",
+      "agent_15": "Zara Voss did not win the Latin Grammy.",
+      "agent_16": "The artist from Nigeria did not win the ARIA Award.",
+      "agent_17": "The artist from Japan did not win the MOBO Award.",
+      "agent_18": "Zara Voss won the Grammy.",
+      "agent_19": "Pedro Salvaje is not from Australia."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 1,
+    "artists": [
+      "Zara Voss",
+      "Sable Finch",
+      "Tom\u00e1s Vidal",
+      "The Drift",
+      "Senzo Malik"
+    ],
+    "artist_attributes": {
+      "Zara Voss": {
+        "genre": "Pop",
+        "decade": "2010s",
+        "nationality": "the UK",
+        "award": "Grammy"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "The Drift": {
+        "genre": "Folk",
+        "decade": "2000s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      }
+    },
+    "question": "Which artist won the Juno Award?",
+    "answer": "Sable Finch",
+    "candidates": [
+      "Tom\u00e1s Vidal",
+      "Zara Voss",
+      "Sable Finch",
+      "Senzo Malik",
+      "The Drift"
+    ],
+    "agent_clues": {
+      "agent_00": "Tom\u00e1s Vidal did not debut in the 1990s.",
+      "agent_01": "The artist from Brazil did not win the Mercury Prize.",
+      "agent_02": "The Country artist did not debut in the 1980s.",
+      "agent_03": "The Country artist is not from Australia.",
+      "agent_04": "The artist from Canada did not win the Mercury Prize.",
+      "agent_05": "The artist from Ireland did not win the ARIA Award.",
+      "agent_06": "Sable Finch does not play Folk.",
+      "agent_07": "The Drift won the Mercury Prize.",
+      "agent_08": "Sable Finch did not win the Grammy.",
+      "agent_09": "The artist who debuted in the 1990s is not from Brazil.",
+      "agent_10": "The Drift did not win the Grammy.",
+      "agent_11": "The artist who debuted in the 1990s is not from Australia.",
+      "agent_12": "The Classical artist is not from Ireland.",
+      "agent_13": "Zara Voss is not from Ireland.",
+      "agent_14": "The Drift is from Ireland.",
+      "agent_15": "Tom\u00e1s Vidal is not from Canada.",
+      "agent_16": "Tom\u00e1s Vidal won the Latin Grammy.",
+      "agent_17": "The Pop artist is not from Australia.",
+      "agent_18": "The Folk artist did not debut in the 2010s.",
+      "agent_19": "Senzo Malik does not play Folk."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 2,
+    "artists": [
+      "Zara Voss",
+      "Yuki Tanase",
+      "Sable Finch",
+      "Remy Vail",
+      "Senzo Malik"
+    ],
+    "artist_attributes": {
+      "Zara Voss": {
+        "genre": "Pop",
+        "decade": "2010s",
+        "nationality": "the UK",
+        "award": "Grammy"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Remy Vail": {
+        "genre": "Jazz",
+        "decade": "2000s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      }
+    },
+    "question": "Which artist won the ARIA Award?",
+    "answer": "Senzo Malik",
+    "candidates": [
+      "Senzo Malik",
+      "Remy Vail",
+      "Sable Finch",
+      "Yuki Tanase",
+      "Zara Voss"
+    ],
+    "agent_clues": {
+      "agent_00": "Senzo Malik did not debut in the 2000s.",
+      "agent_01": "Senzo Malik did not win the NHK Award.",
+      "agent_02": "Zara Voss did not win the Victoires.",
+      "agent_03": "Senzo Malik does not play Country.",
+      "agent_04": "Zara Voss is from the UK.",
+      "agent_05": "The R&B artist did not debut in the 2000s.",
+      "agent_06": "The artist who debuted in the 2000s is not from the UK.",
+      "agent_07": "The Country artist is not from Japan.",
+      "agent_08": "The Country artist did not debut in the 2000s.",
+      "agent_09": "Sable Finch did not win the Grammy.",
+      "agent_10": "The artist from the UK did not win the NHK Award.",
+      "agent_11": "The Country artist did not win the ARIA Award.",
+      "agent_12": "Remy Vail debuted in the 2000s.",
+      "agent_13": "The artist who debuted in the 2000s did not win the ARIA Award.",
+      "agent_14": "The artist who debuted in the 2010s did not win the Juno Award.",
+      "agent_15": "The artist from the UK did not win the ARIA Award.",
+      "agent_16": "Remy Vail does not play Pop.",
+      "agent_17": "The Jazz artist did not debut in the 1980s.",
+      "agent_18": "The artist who debuted in the 1990s did not win the ARIA Award.",
+      "agent_19": "Remy Vail is not from Japan."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 3,
+    "artists": [
+      "Zara Voss",
+      "Seraphina \u00d3",
+      "The Riven",
+      "Celeste Nweke",
+      "Hana Voss"
+    ],
+    "artist_attributes": {
+      "Zara Voss": {
+        "genre": "Pop",
+        "decade": "2010s",
+        "nationality": "the UK",
+        "award": "Grammy"
+      },
+      "Seraphina \u00d3": {
+        "genre": "Classical",
+        "decade": "1990s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Celeste Nweke": {
+        "genre": "R&B",
+        "decade": "2000s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Hana Voss": {
+        "genre": "Country",
+        "decade": "1970s",
+        "nationality": "Germany",
+        "award": "NHK Award"
+      }
+    },
+    "question": "Which artist debuted in the 1990s?",
+    "answer": "Seraphina \u00d3",
+    "candidates": [
+      "Seraphina \u00d3",
+      "Hana Voss",
+      "The Riven",
+      "Zara Voss",
+      "Celeste Nweke"
+    ],
+    "agent_clues": {
+      "agent_00": "Celeste Nweke does not play Country.",
+      "agent_01": "Hana Voss did not debut in the 2000s.",
+      "agent_02": "The R&B artist is not from Australia.",
+      "agent_03": "The artist who debuted in the 1990s did not win the MOBO Award.",
+      "agent_04": "The R&B artist is not from Ireland.",
+      "agent_05": "Zara Voss does not play R&B.",
+      "agent_06": "Seraphina \u00d3 debuted in the 1990s.",
+      "agent_07": "The artist who debuted in the 2000s is not from Germany.",
+      "agent_08": "The artist who debuted in the 2010s did not win the Mercury Prize.",
+      "agent_09": "The Country artist did not win the ARIA Award.",
+      "agent_10": "Seraphina \u00d3 does not play Pop.",
+      "agent_11": "Hana Voss did not win the Mercury Prize.",
+      "agent_12": "The artist who debuted in the 1990s is not from Nigeria.",
+      "agent_13": "The artist who debuted in the 1970s is not from Australia.",
+      "agent_14": "Hana Voss did not win the Grammy.",
+      "agent_15": "The Riven plays Rock.",
+      "agent_16": "Celeste Nweke did not win the Grammy.",
+      "agent_17": "Celeste Nweke did not debut in the 1980s.",
+      "agent_18": "The Rock artist did not debut in the 2010s.",
+      "agent_19": "Seraphina \u00d3 did not debut in the 1970s."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 4,
+    "artists": [
+      "Zara Voss",
+      "DJ Thunderclap",
+      "The Riven",
+      "Pedro Salvaje",
+      "Yuki Tanase"
+    ],
+    "artist_attributes": {
+      "Zara Voss": {
+        "genre": "Pop",
+        "decade": "2010s",
+        "nationality": "the UK",
+        "award": "Grammy"
+      },
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Pedro Salvaje": {
+        "genre": "Reggae",
+        "decade": "1990s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      }
+    },
+    "question": "Which artist won the MTV Award?",
+    "answer": "DJ Thunderclap",
+    "candidates": [
+      "The Riven",
+      "Pedro Salvaje",
+      "Yuki Tanase",
+      "Zara Voss",
+      "DJ Thunderclap"
+    ],
+    "agent_clues": {
+      "agent_00": "DJ Thunderclap won the MTV Award.",
+      "agent_01": "The artist who debuted in the 1960s is not from Australia.",
+      "agent_02": "Pedro Salvaje debuted in the 1990s.",
+      "agent_03": "DJ Thunderclap did not win the ARIA Award.",
+      "agent_04": "Zara Voss is not from Japan.",
+      "agent_05": "The artist from Australia did not win the Grammy.",
+      "agent_06": "The Riven did not debut in the 1960s.",
+      "agent_07": "The Riven is not from Japan.",
+      "agent_08": "Pedro Salvaje did not debut in the 2000s.",
+      "agent_09": "The Folk artist did not win the ARIA Award.",
+      "agent_10": "The artist who debuted in the 1960s is not from Brazil.",
+      "agent_11": "The Folk artist is not from Australia.",
+      "agent_12": "Yuki Tanase plays Folk.",
+      "agent_13": "The Pop artist did not debut in the 1960s.",
+      "agent_14": "The artist from Germany did not win the ARIA Award.",
+      "agent_15": "The artist from the UK did not win the MTV Award.",
+      "agent_16": "The Electronic artist is not from the UK.",
+      "agent_17": "The artist who debuted in the 1960s did not win the MTV Award.",
+      "agent_18": "Yuki Tanase did not debut in the 1990s.",
+      "agent_19": "DJ Thunderclap is not from Japan."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 5,
+    "artists": [
+      "DJ Thunderclap",
+      "The Riven",
+      "Sable Finch",
+      "Nneka Abara",
+      "Tom\u00e1s Vidal"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      }
+    },
+    "question": "Which artist is from Australia?",
+    "answer": "The Riven",
+    "candidates": [
+      "The Riven",
+      "DJ Thunderclap",
+      "Sable Finch",
+      "Tom\u00e1s Vidal",
+      "Nneka Abara"
+    ],
+    "agent_clues": {
+      "agent_00": "The Classical artist did not debut in the 1980s.",
+      "agent_01": "The Rock artist did not debut in the 2000s.",
+      "agent_02": "Tom\u00e1s Vidal did not debut in the 1980s.",
+      "agent_03": "The artist who debuted in the 1990s did not win the MOBO Award.",
+      "agent_04": "The artist from Canada did not win the Latin Grammy.",
+      "agent_05": "The artist who debuted in the 1990s did not win the ARIA Award.",
+      "agent_06": "DJ Thunderclap debuted in the 2000s.",
+      "agent_07": "The Country artist did not win the MOBO Award.",
+      "agent_08": "The artist from Nigeria did not win the ARIA Award.",
+      "agent_09": "The Classical artist did not debut in the 2010s.",
+      "agent_10": "The artist from Canada did not win the MOBO Award.",
+      "agent_11": "The Classical artist did not win the MOBO Award.",
+      "agent_12": "The Afrobeats artist did not win the MTV Award.",
+      "agent_13": "DJ Thunderclap did not debut in the 1970s.",
+      "agent_14": "DJ Thunderclap does not play Afrobeats.",
+      "agent_15": "Sable Finch does not play Electronic.",
+      "agent_16": "Nneka Abara did not debut in the 1980s.",
+      "agent_17": "Sable Finch won the Juno Award.",
+      "agent_18": "DJ Thunderclap is not from Brazil.",
+      "agent_19": "The artist who debuted in the 2010s did not win the Juno Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 6,
+    "artists": [
+      "DJ Thunderclap",
+      "Miles Corrigan",
+      "The Riven",
+      "Yuki Tanase",
+      "Nneka Abara"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "Miles Corrigan": {
+        "genre": "Jazz",
+        "decade": "1970s",
+        "nationality": "the US",
+        "award": "Grammy"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      }
+    },
+    "question": "Which artist is from Nigeria?",
+    "answer": "Nneka Abara",
+    "candidates": [
+      "DJ Thunderclap",
+      "The Riven",
+      "Yuki Tanase",
+      "Miles Corrigan",
+      "Nneka Abara"
+    ],
+    "agent_clues": {
+      "agent_00": "Miles Corrigan is not from Nigeria.",
+      "agent_01": "The Riven does not play Jazz.",
+      "agent_02": "Nneka Abara does not play Folk.",
+      "agent_03": "The artist who debuted in the 2010s is not from Australia.",
+      "agent_04": "Miles Corrigan plays Jazz.",
+      "agent_05": "The Rock artist did not win the NHK Award.",
+      "agent_06": "Yuki Tanase did not win the MTV Award.",
+      "agent_07": "The artist who debuted in the 2000s did not win the MOBO Award.",
+      "agent_08": "Nneka Abara does not play Rock.",
+      "agent_09": "Yuki Tanase debuted in the 1960s.",
+      "agent_10": "Yuki Tanase is not from the US.",
+      "agent_11": "DJ Thunderclap did not win the Grammy.",
+      "agent_12": "The Rock artist is not from the US.",
+      "agent_13": "The artist who debuted in the 1970s is not from Germany.",
+      "agent_14": "The Riven did not win the MOBO Award.",
+      "agent_15": "The Rock artist is not from Germany.",
+      "agent_16": "DJ Thunderclap plays Electronic.",
+      "agent_17": "Nneka Abara won the MOBO Award.",
+      "agent_18": "Yuki Tanase did not debut in the 2010s.",
+      "agent_19": "Yuki Tanase did not debut in the 2000s."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 7,
+    "artists": [
+      "Luka Dray",
+      "Celeste Nweke",
+      "Yuki Tanase",
+      "Colette Beaumont",
+      "Tom\u00e1s Vidal"
+    ],
+    "artist_attributes": {
+      "Luka Dray": {
+        "genre": "Hip-Hop",
+        "decade": "2010s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Celeste Nweke": {
+        "genre": "R&B",
+        "decade": "2000s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Colette Beaumont": {
+        "genre": "Pop",
+        "decade": "1980s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      }
+    },
+    "question": "Which artist is from Nigeria?",
+    "answer": "Celeste Nweke",
+    "candidates": [
+      "Luka Dray",
+      "Colette Beaumont",
+      "Yuki Tanase",
+      "Celeste Nweke",
+      "Tom\u00e1s Vidal"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist who debuted in the 2010s did not win the NHK Award.",
+      "agent_01": "Tom\u00e1s Vidal is not from Canada.",
+      "agent_02": "Yuki Tanase won the NHK Award.",
+      "agent_03": "The artist from Canada did not win the Victoires.",
+      "agent_04": "Tom\u00e1s Vidal debuted in the 1970s.",
+      "agent_05": "Luka Dray does not play R&B.",
+      "agent_06": "The Classical artist did not debut in the 1960s.",
+      "agent_07": "The artist who debuted in the 1960s did not win the Victoires.",
+      "agent_08": "Yuki Tanase did not win the MOBO Award.",
+      "agent_09": "Yuki Tanase did not debut in the 1980s.",
+      "agent_10": "The artist from Japan did not win the Juno Award.",
+      "agent_11": "The Classical artist is not from Canada.",
+      "agent_12": "The R&B artist did not win the Victoires.",
+      "agent_13": "The artist who debuted in the 1960s did not win the Juno Award.",
+      "agent_14": "The artist from Canada did not win the Latin Grammy.",
+      "agent_15": "Celeste Nweke did not debut in the 2010s.",
+      "agent_16": "The Hip-Hop artist did not debut in the 2000s.",
+      "agent_17": "Yuki Tanase is not from France.",
+      "agent_18": "Yuki Tanase does not play R&B.",
+      "agent_19": "Colette Beaumont is not from Japan."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 8,
+    "artists": [
+      "DJ Thunderclap",
+      "Luka Dray",
+      "The Riven",
+      "Yuki Tanase",
+      "Tom\u00e1s Vidal"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "Luka Dray": {
+        "genre": "Hip-Hop",
+        "decade": "2010s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      }
+    },
+    "question": "Which artist won the NHK Award?",
+    "answer": "Yuki Tanase",
+    "candidates": [
+      "The Riven",
+      "DJ Thunderclap",
+      "Yuki Tanase",
+      "Luka Dray",
+      "Tom\u00e1s Vidal"
+    ],
+    "agent_clues": {
+      "agent_00": "The Folk artist did not win the ARIA Award.",
+      "agent_01": "The Riven is not from Japan.",
+      "agent_02": "The artist from Canada did not win the MTV Award.",
+      "agent_03": "The artist who debuted in the 1980s is not from Brazil.",
+      "agent_04": "The artist who debuted in the 2000s did not win the Latin Grammy.",
+      "agent_05": "DJ Thunderclap is not from Brazil.",
+      "agent_06": "The artist from Germany did not win the NHK Award.",
+      "agent_07": "The Electronic artist did not debut in the 1970s.",
+      "agent_08": "The artist from Germany did not win the ARIA Award.",
+      "agent_09": "The Folk artist is not from Germany.",
+      "agent_10": "The artist who debuted in the 2010s is not from Australia.",
+      "agent_11": "The Folk artist is not from Brazil.",
+      "agent_12": "Luka Dray did not win the Latin Grammy.",
+      "agent_13": "Yuki Tanase did not win the MTV Award.",
+      "agent_14": "Luka Dray did not debut in the 1980s.",
+      "agent_15": "The artist who debuted in the 1970s did not win the NHK Award.",
+      "agent_16": "The Riven did not win the Latin Grammy.",
+      "agent_17": "The Classical artist did not debut in the 1980s.",
+      "agent_18": "The artist who debuted in the 2010s did not win the Latin Grammy.",
+      "agent_19": "Yuki Tanase did not debut in the 1970s."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 9,
+    "artists": [
+      "Orion Blaze",
+      "Sable Finch",
+      "Tom\u00e1s Vidal",
+      "Remy Vail",
+      "Senzo Malik"
+    ],
+    "artist_attributes": {
+      "Orion Blaze": {
+        "genre": "Rock",
+        "decade": "2010s",
+        "nationality": "the US",
+        "award": "MTV Award"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Remy Vail": {
+        "genre": "Jazz",
+        "decade": "2000s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      }
+    },
+    "question": "Which artist is from Canada?",
+    "answer": "Sable Finch",
+    "candidates": [
+      "Sable Finch",
+      "Tom\u00e1s Vidal",
+      "Remy Vail",
+      "Senzo Malik",
+      "Orion Blaze"
+    ],
+    "agent_clues": {
+      "agent_00": "Tom\u00e1s Vidal won the Latin Grammy.",
+      "agent_01": "The artist who debuted in the 1970s did not win the Victoires.",
+      "agent_02": "The Classical artist did not debut in the 1980s.",
+      "agent_03": "The artist who debuted in the 2010s did not win the Latin Grammy.",
+      "agent_04": "Tom\u00e1s Vidal did not debut in the 2000s.",
+      "agent_05": "The Country artist is not from Brazil.",
+      "agent_06": "Sable Finch plays Country.",
+      "agent_07": "Sable Finch did not debut in the 1970s.",
+      "agent_08": "Orion Blaze is not from France.",
+      "agent_09": "The artist who debuted in the 2000s is not from the US.",
+      "agent_10": "Tom\u00e1s Vidal did not debut in the 1980s.",
+      "agent_11": "Orion Blaze is not from Brazil.",
+      "agent_12": "The R&B artist did not win the Juno Award.",
+      "agent_13": "Senzo Malik is not from Brazil.",
+      "agent_14": "Orion Blaze won the MTV Award.",
+      "agent_15": "Orion Blaze plays Rock.",
+      "agent_16": "The artist who debuted in the 1980s is not from the US.",
+      "agent_17": "The artist who debuted in the 2000s is not from Canada.",
+      "agent_18": "The artist from France did not win the MTV Award.",
+      "agent_19": "The artist who debuted in the 2010s did not win the Juno Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 10,
+    "artists": [
+      "DJ Thunderclap",
+      "Colette Beaumont",
+      "Nneka Abara",
+      "Tom\u00e1s Vidal",
+      "Kaia Storm"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "Colette Beaumont": {
+        "genre": "Pop",
+        "decade": "1980s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Kaia Storm": {
+        "genre": "Hip-Hop",
+        "decade": "1990s",
+        "nationality": "the US",
+        "award": "Grammy"
+      }
+    },
+    "question": "Which artist is from the US?",
+    "answer": "Kaia Storm",
+    "candidates": [
+      "DJ Thunderclap",
+      "Kaia Storm",
+      "Colette Beaumont",
+      "Tom\u00e1s Vidal",
+      "Nneka Abara"
+    ],
+    "agent_clues": {
+      "agent_00": "Tom\u00e1s Vidal does not play Hip-Hop.",
+      "agent_01": "The artist who debuted in the 1970s did not win the Grammy.",
+      "agent_02": "The Electronic artist did not win the MOBO Award.",
+      "agent_03": "Colette Beaumont plays Pop.",
+      "agent_04": "Kaia Storm did not debut in the 2010s.",
+      "agent_05": "The Classical artist did not win the MTV Award.",
+      "agent_06": "DJ Thunderclap did not debut in the 1970s.",
+      "agent_07": "Kaia Storm does not play Pop.",
+      "agent_08": "DJ Thunderclap did not win the Latin Grammy.",
+      "agent_09": "The artist who debuted in the 1980s is not from Germany.",
+      "agent_10": "Tom\u00e1s Vidal did not win the Grammy.",
+      "agent_11": "The artist who debuted in the 1990s did not win the Victoires.",
+      "agent_12": "The artist who debuted in the 1970s did not win the MTV Award.",
+      "agent_13": "The Hip-Hop artist did not debut in the 2010s.",
+      "agent_14": "The artist from Nigeria did not win the Victoires.",
+      "agent_15": "DJ Thunderclap did not win the Victoires.",
+      "agent_16": "Colette Beaumont did not debut in the 1990s.",
+      "agent_17": "The Electronic artist is not from the US.",
+      "agent_18": "The Pop artist is not from the US.",
+      "agent_19": "The artist from France did not win the Grammy."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 11,
+    "artists": [
+      "Yuki Tanase",
+      "Sable Finch",
+      "Frost Ellery",
+      "Tom\u00e1s Vidal",
+      "Remy Vail"
+    ],
+    "artist_attributes": {
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Frost Ellery": {
+        "genre": "Electronic",
+        "decade": "1980s",
+        "nationality": "the UK",
+        "award": "Mercury Prize"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Remy Vail": {
+        "genre": "Jazz",
+        "decade": "2000s",
+        "nationality": "France",
+        "award": "Victoires"
+      }
+    },
+    "question": "Which artist is from Brazil?",
+    "answer": "Tom\u00e1s Vidal",
+    "candidates": [
+      "Sable Finch",
+      "Frost Ellery",
+      "Yuki Tanase",
+      "Remy Vail",
+      "Tom\u00e1s Vidal"
+    ],
+    "agent_clues": {
+      "agent_00": "The Country artist is not from Brazil.",
+      "agent_01": "Tom\u00e1s Vidal is not from France.",
+      "agent_02": "Frost Ellery is not from Brazil.",
+      "agent_03": "Frost Ellery does not play Country.",
+      "agent_04": "Yuki Tanase did not win the Latin Grammy.",
+      "agent_05": "The artist from the UK did not win the Latin Grammy.",
+      "agent_06": "The artist who debuted in the 2000s is not from Japan.",
+      "agent_07": "Frost Ellery did not win the Victoires.",
+      "agent_08": "The Country artist did not debut in the 1970s.",
+      "agent_09": "Tom\u00e1s Vidal did not debut in the 1990s.",
+      "agent_10": "Frost Ellery did not debut in the 2000s.",
+      "agent_11": "Remy Vail is not from Brazil.",
+      "agent_12": "The artist from Brazil did not win the Mercury Prize.",
+      "agent_13": "The artist from France did not win the NHK Award.",
+      "agent_14": "Frost Ellery did not win the NHK Award.",
+      "agent_15": "The Folk artist did not debut in the 2000s.",
+      "agent_16": "Yuki Tanase does not play Jazz.",
+      "agent_17": "The Country artist did not debut in the 1960s.",
+      "agent_18": "Sable Finch does not play Classical.",
+      "agent_19": "The Country artist is not from France."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 12,
+    "artists": [
+      "DJ Thunderclap",
+      "The Riven",
+      "Pedro Salvaje",
+      "Yuki Tanase",
+      "Nneka Abara"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Pedro Salvaje": {
+        "genre": "Reggae",
+        "decade": "1990s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      }
+    },
+    "question": "Which artist debuted in the 1990s?",
+    "answer": "Pedro Salvaje",
+    "candidates": [
+      "Yuki Tanase",
+      "The Riven",
+      "Nneka Abara",
+      "Pedro Salvaje",
+      "DJ Thunderclap"
+    ],
+    "agent_clues": {
+      "agent_00": "The Riven is not from Brazil.",
+      "agent_01": "Nneka Abara does not play Folk.",
+      "agent_02": "The artist from Japan did not win the Latin Grammy.",
+      "agent_03": "Pedro Salvaje did not debut in the 2000s.",
+      "agent_04": "The Riven does not play Afrobeats.",
+      "agent_05": "The Rock artist did not debut in the 2000s.",
+      "agent_06": "Yuki Tanase won the NHK Award.",
+      "agent_07": "The Folk artist did not win the ARIA Award.",
+      "agent_08": "Pedro Salvaje did not win the ARIA Award.",
+      "agent_09": "Yuki Tanase did not win the MTV Award.",
+      "agent_10": "The Afrobeats artist did not debut in the 1960s.",
+      "agent_11": "The Rock artist did not win the MTV Award.",
+      "agent_12": "DJ Thunderclap did not win the Latin Grammy.",
+      "agent_13": "Yuki Tanase is from Japan.",
+      "agent_14": "The Folk artist is not from Nigeria.",
+      "agent_15": "The artist who debuted in the 2010s is not from Japan.",
+      "agent_16": "The artist who debuted in the 2010s is not from Brazil.",
+      "agent_17": "The Folk artist did not debut in the 2010s.",
+      "agent_18": "Nneka Abara did not debut in the 1960s.",
+      "agent_19": "The artist who debuted in the 2010s did not win the Latin Grammy."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 13,
+    "artists": [
+      "Pedro Salvaje",
+      "Orion Blaze",
+      "The Drift",
+      "Senzo Malik",
+      "Hana Voss"
+    ],
+    "artist_attributes": {
+      "Pedro Salvaje": {
+        "genre": "Reggae",
+        "decade": "1990s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Orion Blaze": {
+        "genre": "Rock",
+        "decade": "2010s",
+        "nationality": "the US",
+        "award": "MTV Award"
+      },
+      "The Drift": {
+        "genre": "Folk",
+        "decade": "2000s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Hana Voss": {
+        "genre": "Country",
+        "decade": "1970s",
+        "nationality": "Germany",
+        "award": "NHK Award"
+      }
+    },
+    "question": "Which artist won the NHK Award?",
+    "answer": "Hana Voss",
+    "candidates": [
+      "Pedro Salvaje",
+      "Hana Voss",
+      "The Drift",
+      "Senzo Malik",
+      "Orion Blaze"
+    ],
+    "agent_clues": {
+      "agent_00": "Pedro Salvaje did not win the Mercury Prize.",
+      "agent_01": "The Drift does not play Reggae.",
+      "agent_02": "The R&B artist did not win the Mercury Prize.",
+      "agent_03": "Hana Voss does not play Reggae.",
+      "agent_04": "The artist who debuted in the 2010s did not win the NHK Award.",
+      "agent_05": "The artist who debuted in the 1980s is not from Brazil.",
+      "agent_06": "The Reggae artist did not win the MTV Award.",
+      "agent_07": "Senzo Malik does not play Folk.",
+      "agent_08": "The artist who debuted in the 2010s did not win the Latin Grammy.",
+      "agent_09": "The artist who debuted in the 2010s did not win the Mercury Prize.",
+      "agent_10": "Orion Blaze did not win the NHK Award.",
+      "agent_11": "The R&B artist did not debut in the 1990s.",
+      "agent_12": "Pedro Salvaje did not debut in the 1980s.",
+      "agent_13": "The Reggae artist did not debut in the 2010s.",
+      "agent_14": "The Rock artist did not debut in the 1970s.",
+      "agent_15": "Orion Blaze did not debut in the 2000s.",
+      "agent_16": "Hana Voss is not from Ireland.",
+      "agent_17": "Hana Voss is not from the US.",
+      "agent_18": "The artist who debuted in the 2010s is not from Australia.",
+      "agent_19": "The Country artist is not from Brazil."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 14,
+    "artists": [
+      "Nneka Abara",
+      "Tom\u00e1s Vidal",
+      "Remy Vail",
+      "Kaia Storm",
+      "Senzo Malik"
+    ],
+    "artist_attributes": {
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Remy Vail": {
+        "genre": "Jazz",
+        "decade": "2000s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Kaia Storm": {
+        "genre": "Hip-Hop",
+        "decade": "1990s",
+        "nationality": "the US",
+        "award": "Grammy"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      }
+    },
+    "question": "Which artist debuted in the 1970s?",
+    "answer": "Tom\u00e1s Vidal",
+    "candidates": [
+      "Remy Vail",
+      "Nneka Abara",
+      "Tom\u00e1s Vidal",
+      "Kaia Storm",
+      "Senzo Malik"
+    ],
+    "agent_clues": {
+      "agent_00": "Kaia Storm is not from Australia.",
+      "agent_01": "Remy Vail did not debut in the 2010s.",
+      "agent_02": "Tom\u00e1s Vidal debuted in the 1970s.",
+      "agent_03": "Nneka Abara is not from France.",
+      "agent_04": "The Afrobeats artist did not debut in the 1980s.",
+      "agent_05": "Remy Vail does not play Hip-Hop.",
+      "agent_06": "Remy Vail is not from the US.",
+      "agent_07": "Tom\u00e1s Vidal did not win the ARIA Award.",
+      "agent_08": "The Classical artist did not win the Victoires.",
+      "agent_09": "Tom\u00e1s Vidal does not play Afrobeats.",
+      "agent_10": "Nneka Abara did not debut in the 2000s.",
+      "agent_11": "Nneka Abara did not win the Victoires.",
+      "agent_12": "Nneka Abara debuted in the 2010s.",
+      "agent_13": "The artist from Nigeria did not win the Latin Grammy.",
+      "agent_14": "The artist who debuted in the 1990s is not from France.",
+      "agent_15": "The Afrobeats artist did not win the Victoires.",
+      "agent_16": "Remy Vail does not play Afrobeats.",
+      "agent_17": "The artist who debuted in the 1980s is not from France.",
+      "agent_18": "Kaia Storm is from the US.",
+      "agent_19": "The artist who debuted in the 1980s did not win the Latin Grammy."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 15,
+    "artists": [
+      "Yuki Tanase",
+      "Nneka Abara",
+      "Frost Ellery",
+      "Tom\u00e1s Vidal",
+      "Kaia Storm"
+    ],
+    "artist_attributes": {
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Frost Ellery": {
+        "genre": "Electronic",
+        "decade": "1980s",
+        "nationality": "the UK",
+        "award": "Mercury Prize"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Kaia Storm": {
+        "genre": "Hip-Hop",
+        "decade": "1990s",
+        "nationality": "the US",
+        "award": "Grammy"
+      }
+    },
+    "question": "Which artist plays Classical?",
+    "answer": "Tom\u00e1s Vidal",
+    "candidates": [
+      "Yuki Tanase",
+      "Kaia Storm",
+      "Nneka Abara",
+      "Tom\u00e1s Vidal",
+      "Frost Ellery"
+    ],
+    "agent_clues": {
+      "agent_00": "Nneka Abara did not debut in the 1970s.",
+      "agent_01": "Nneka Abara did not win the Grammy.",
+      "agent_02": "The artist who debuted in the 2010s is not from Brazil.",
+      "agent_03": "The artist from Japan did not win the Latin Grammy.",
+      "agent_04": "The artist who debuted in the 1980s is not from Nigeria.",
+      "agent_05": "Tom\u00e1s Vidal does not play Hip-Hop.",
+      "agent_06": "Tom\u00e1s Vidal is not from Japan.",
+      "agent_07": "Tom\u00e1s Vidal did not debut in the 1990s.",
+      "agent_08": "The artist from Nigeria did not win the NHK Award.",
+      "agent_09": "The Hip-Hop artist did not debut in the 1980s.",
+      "agent_10": "The Folk artist did not debut in the 2010s.",
+      "agent_11": "Tom\u00e1s Vidal debuted in the 1970s.",
+      "agent_12": "Yuki Tanase did not debut in the 1990s.",
+      "agent_13": "The artist who debuted in the 1960s is not from Nigeria.",
+      "agent_14": "The Hip-Hop artist did not debut in the 2010s.",
+      "agent_15": "Yuki Tanase is not from Nigeria.",
+      "agent_16": "Nneka Abara is not from Japan.",
+      "agent_17": "The Classical artist did not win the NHK Award.",
+      "agent_18": "Yuki Tanase did not win the Mercury Prize.",
+      "agent_19": "The Afrobeats artist did not win the Grammy."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 16,
+    "artists": [
+      "The Riven",
+      "Yuki Tanase",
+      "Tom\u00e1s Vidal",
+      "Remy Vail",
+      "Kaia Storm"
+    ],
+    "artist_attributes": {
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Remy Vail": {
+        "genre": "Jazz",
+        "decade": "2000s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Kaia Storm": {
+        "genre": "Hip-Hop",
+        "decade": "1990s",
+        "nationality": "the US",
+        "award": "Grammy"
+      }
+    },
+    "question": "Which artist is from Japan?",
+    "answer": "Yuki Tanase",
+    "candidates": [
+      "Tom\u00e1s Vidal",
+      "Yuki Tanase",
+      "Remy Vail",
+      "Kaia Storm",
+      "The Riven"
+    ],
+    "agent_clues": {
+      "agent_00": "Remy Vail plays Jazz.",
+      "agent_01": "Yuki Tanase is not from Brazil.",
+      "agent_02": "The Folk artist did not win the Victoires.",
+      "agent_03": "The artist who debuted in the 2000s is not from Australia.",
+      "agent_04": "The artist from Japan did not win the ARIA Award.",
+      "agent_05": "The Classical artist did not win the ARIA Award.",
+      "agent_06": "The Jazz artist is not from the US.",
+      "agent_07": "The Folk artist is not from the US.",
+      "agent_08": "The Riven debuted in the 1980s.",
+      "agent_09": "The artist who debuted in the 1960s is not from Brazil.",
+      "agent_10": "The Folk artist did not win the Latin Grammy.",
+      "agent_11": "Remy Vail did not win the NHK Award.",
+      "agent_12": "Kaia Storm is from the US.",
+      "agent_13": "The Riven did not debut in the 1960s.",
+      "agent_14": "The artist who debuted in the 1980s did not win the Latin Grammy.",
+      "agent_15": "Kaia Storm plays Hip-Hop.",
+      "agent_16": "Yuki Tanase did not win the ARIA Award.",
+      "agent_17": "Kaia Storm did not debut in the 2000s.",
+      "agent_18": "The artist from Brazil did not win the NHK Award.",
+      "agent_19": "The artist from France did not win the NHK Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 17,
+    "artists": [
+      "Miles Corrigan",
+      "Seraphina \u00d3",
+      "Luka Dray",
+      "The Riven",
+      "Yuki Tanase"
+    ],
+    "artist_attributes": {
+      "Miles Corrigan": {
+        "genre": "Jazz",
+        "decade": "1970s",
+        "nationality": "the US",
+        "award": "Grammy"
+      },
+      "Seraphina \u00d3": {
+        "genre": "Classical",
+        "decade": "1990s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "Luka Dray": {
+        "genre": "Hip-Hop",
+        "decade": "2010s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      }
+    },
+    "question": "Which artist is from Canada?",
+    "answer": "Luka Dray",
+    "candidates": [
+      "Yuki Tanase",
+      "Miles Corrigan",
+      "Luka Dray",
+      "Seraphina \u00d3",
+      "The Riven"
+    ],
+    "agent_clues": {
+      "agent_00": "The Rock artist did not debut in the 1990s.",
+      "agent_01": "The Folk artist did not win the ARIA Award.",
+      "agent_02": "Seraphina \u00d3 is from Ireland.",
+      "agent_03": "The Riven does not play Folk.",
+      "agent_04": "The artist from the US did not win the Juno Award.",
+      "agent_05": "The artist from Australia did not win the Juno Award.",
+      "agent_06": "The artist who debuted in the 2010s did not win the Mercury Prize.",
+      "agent_07": "The artist who debuted in the 1970s is not from Ireland.",
+      "agent_08": "Miles Corrigan does not play Rock.",
+      "agent_09": "The Folk artist is not from the US.",
+      "agent_10": "The Jazz artist did not win the NHK Award.",
+      "agent_11": "Miles Corrigan won the Grammy.",
+      "agent_12": "Luka Dray did not debut in the 1970s.",
+      "agent_13": "The artist who debuted in the 1980s is not from Canada.",
+      "agent_14": "The Classical artist did not debut in the 2010s.",
+      "agent_15": "Seraphina \u00d3 did not win the NHK Award.",
+      "agent_16": "Luka Dray does not play Jazz.",
+      "agent_17": "The artist who debuted in the 1960s is not from Canada.",
+      "agent_18": "Miles Corrigan did not win the Juno Award.",
+      "agent_19": "Yuki Tanase did not win the Juno Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 18,
+    "artists": [
+      "DJ Thunderclap",
+      "Seraphina \u00d3",
+      "Luka Dray",
+      "Yuki Tanase",
+      "Senzo Malik"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "Seraphina \u00d3": {
+        "genre": "Classical",
+        "decade": "1990s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "Luka Dray": {
+        "genre": "Hip-Hop",
+        "decade": "2010s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      }
+    },
+    "question": "Which artist is from Germany?",
+    "answer": "DJ Thunderclap",
+    "candidates": [
+      "DJ Thunderclap",
+      "Seraphina \u00d3",
+      "Luka Dray",
+      "Yuki Tanase",
+      "Senzo Malik"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist from Japan did not win the MTV Award.",
+      "agent_01": "The artist who debuted in the 1960s is not from Germany.",
+      "agent_02": "Luka Dray did not debut in the 1990s.",
+      "agent_03": "Luka Dray did not debut in the 1980s.",
+      "agent_04": "The Classical artist is not from Canada.",
+      "agent_05": "Luka Dray is not from Japan.",
+      "agent_06": "DJ Thunderclap did not debut in the 1980s.",
+      "agent_07": "Luka Dray plays Hip-Hop.",
+      "agent_08": "Luka Dray did not win the Mercury Prize.",
+      "agent_09": "Yuki Tanase is not from Canada.",
+      "agent_10": "The artist who debuted in the 1980s is not from Germany.",
+      "agent_11": "The artist who debuted in the 1960s is not from Ireland.",
+      "agent_12": "Luka Dray does not play Classical.",
+      "agent_13": "DJ Thunderclap did not win the Mercury Prize.",
+      "agent_14": "The R&B artist did not debut in the 2000s.",
+      "agent_15": "The Classical artist did not debut in the 2000s.",
+      "agent_16": "The artist from Ireland did not win the Juno Award.",
+      "agent_17": "The Electronic artist did not debut in the 1960s.",
+      "agent_18": "DJ Thunderclap is not from Ireland.",
+      "agent_19": "The artist from Australia did not win the Juno Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 19,
+    "artists": [
+      "Zara Voss",
+      "DJ Thunderclap",
+      "The Riven",
+      "Yuki Tanase",
+      "Sable Finch"
+    ],
+    "artist_attributes": {
+      "Zara Voss": {
+        "genre": "Pop",
+        "decade": "2010s",
+        "nationality": "the UK",
+        "award": "Grammy"
+      },
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "The Riven": {
+        "genre": "Rock",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      }
+    },
+    "question": "Which artist plays Electronic?",
+    "answer": "DJ Thunderclap",
+    "candidates": [
+      "DJ Thunderclap",
+      "Sable Finch",
+      "Yuki Tanase",
+      "The Riven",
+      "Zara Voss"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist who debuted in the 2010s is not from Germany.",
+      "agent_01": "The artist who debuted in the 1980s did not win the NHK Award.",
+      "agent_02": "The artist who debuted in the 1960s did not win the Grammy.",
+      "agent_03": "The Pop artist did not win the NHK Award.",
+      "agent_04": "DJ Thunderclap debuted in the 2000s.",
+      "agent_05": "Yuki Tanase does not play Electronic.",
+      "agent_06": "DJ Thunderclap plays Electronic.",
+      "agent_07": "The Electronic artist did not debut in the 2010s.",
+      "agent_08": "The artist from Australia did not win the Grammy.",
+      "agent_09": "DJ Thunderclap did not debut in the 1990s.",
+      "agent_10": "The Folk artist did not win the Grammy.",
+      "agent_11": "The Riven debuted in the 1980s.",
+      "agent_12": "The artist from Canada did not win the NHK Award.",
+      "agent_13": "The artist who debuted in the 2000s did not win the Grammy.",
+      "agent_14": "Sable Finch did not debut in the 2000s.",
+      "agent_15": "The artist who debuted in the 1960s is not from Australia.",
+      "agent_16": "Yuki Tanase is not from the UK.",
+      "agent_17": "Yuki Tanase is not from Australia.",
+      "agent_18": "The Electronic artist is not from the UK.",
+      "agent_19": "The Folk artist did not win the MTV Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 20,
+    "artists": [
+      "Celeste Nweke",
+      "Yuki Tanase",
+      "Frost Ellery",
+      "Tom\u00e1s Vidal",
+      "Kaia Storm"
+    ],
+    "artist_attributes": {
+      "Celeste Nweke": {
+        "genre": "R&B",
+        "decade": "2000s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Frost Ellery": {
+        "genre": "Electronic",
+        "decade": "1980s",
+        "nationality": "the UK",
+        "award": "Mercury Prize"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Kaia Storm": {
+        "genre": "Hip-Hop",
+        "decade": "1990s",
+        "nationality": "the US",
+        "award": "Grammy"
+      }
+    },
+    "question": "Which artist is from the US?",
+    "answer": "Kaia Storm",
+    "candidates": [
+      "Kaia Storm",
+      "Tom\u00e1s Vidal",
+      "Yuki Tanase",
+      "Frost Ellery",
+      "Celeste Nweke"
+    ],
+    "agent_clues": {
+      "agent_00": "Tom\u00e1s Vidal plays Classical.",
+      "agent_01": "Yuki Tanase is not from Brazil.",
+      "agent_02": "The artist from Brazil did not win the NHK Award.",
+      "agent_03": "Celeste Nweke won the MOBO Award.",
+      "agent_04": "The Classical artist did not win the Mercury Prize.",
+      "agent_05": "Tom\u00e1s Vidal did not debut in the 2000s.",
+      "agent_06": "Yuki Tanase won the NHK Award.",
+      "agent_07": "The artist who debuted in the 1970s did not win the MOBO Award.",
+      "agent_08": "Yuki Tanase is not from the US.",
+      "agent_09": "The artist who debuted in the 1960s is not from Brazil.",
+      "agent_10": "Frost Ellery did not win the MOBO Award.",
+      "agent_11": "Celeste Nweke did not debut in the 1970s.",
+      "agent_12": "Tom\u00e1s Vidal did not win the NHK Award.",
+      "agent_13": "The artist who debuted in the 1970s is not from the US.",
+      "agent_14": "The R&B artist is not from Brazil.",
+      "agent_15": "The Electronic artist is not from Japan.",
+      "agent_16": "Frost Ellery is not from Brazil.",
+      "agent_17": "The R&B artist did not win the Mercury Prize.",
+      "agent_18": "Yuki Tanase does not play Classical.",
+      "agent_19": "Kaia Storm won the Grammy."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 21,
+    "artists": [
+      "DJ Thunderclap",
+      "Miles Corrigan",
+      "Yuki Tanase",
+      "Colette Beaumont",
+      "Sable Finch"
+    ],
+    "artist_attributes": {
+      "DJ Thunderclap": {
+        "genre": "Electronic",
+        "decade": "2000s",
+        "nationality": "Germany",
+        "award": "MTV Award"
+      },
+      "Miles Corrigan": {
+        "genre": "Jazz",
+        "decade": "1970s",
+        "nationality": "the US",
+        "award": "Grammy"
+      },
+      "Yuki Tanase": {
+        "genre": "Folk",
+        "decade": "1960s",
+        "nationality": "Japan",
+        "award": "NHK Award"
+      },
+      "Colette Beaumont": {
+        "genre": "Pop",
+        "decade": "1980s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Sable Finch": {
+        "genre": "Country",
+        "decade": "1990s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      }
+    },
+    "question": "Which artist plays Country?",
+    "answer": "Sable Finch",
+    "candidates": [
+      "Colette Beaumont",
+      "Yuki Tanase",
+      "Miles Corrigan",
+      "Sable Finch",
+      "DJ Thunderclap"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist from Canada did not win the MTV Award.",
+      "agent_01": "DJ Thunderclap is not from France.",
+      "agent_02": "The artist who debuted in the 1970s did not win the MTV Award.",
+      "agent_03": "DJ Thunderclap did not win the Victoires.",
+      "agent_04": "Yuki Tanase debuted in the 1960s.",
+      "agent_05": "Colette Beaumont did not win the Juno Award.",
+      "agent_06": "The Pop artist did not debut in the 1960s.",
+      "agent_07": "Sable Finch won the Juno Award.",
+      "agent_08": "The Jazz artist is not from Germany.",
+      "agent_09": "Colette Beaumont did not debut in the 1960s.",
+      "agent_10": "The artist who debuted in the 2000s is not from Japan.",
+      "agent_11": "DJ Thunderclap did not debut in the 1960s.",
+      "agent_12": "The Folk artist is not from Canada.",
+      "agent_13": "The artist from Japan did not win the Juno Award.",
+      "agent_14": "The Folk artist did not debut in the 2000s.",
+      "agent_15": "The artist from the US did not win the MTV Award.",
+      "agent_16": "Miles Corrigan did not debut in the 1980s.",
+      "agent_17": "The artist who debuted in the 1990s did not win the Victoires.",
+      "agent_18": "Sable Finch did not win the NHK Award.",
+      "agent_19": "The Jazz artist did not win the NHK Award."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 22,
+    "artists": [
+      "Nneka Abara",
+      "Tom\u00e1s Vidal",
+      "Kaia Storm",
+      "The Drift",
+      "Senzo Malik"
+    ],
+    "artist_attributes": {
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Tom\u00e1s Vidal": {
+        "genre": "Classical",
+        "decade": "1970s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Kaia Storm": {
+        "genre": "Hip-Hop",
+        "decade": "1990s",
+        "nationality": "the US",
+        "award": "Grammy"
+      },
+      "The Drift": {
+        "genre": "Folk",
+        "decade": "2000s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      }
+    },
+    "question": "Which artist debuted in the 2000s?",
+    "answer": "The Drift",
+    "candidates": [
+      "Kaia Storm",
+      "Senzo Malik",
+      "Tom\u00e1s Vidal",
+      "The Drift",
+      "Nneka Abara"
+    ],
+    "agent_clues": {
+      "agent_00": "The Hip-Hop artist is not from Ireland.",
+      "agent_01": "The Hip-Hop artist did not win the ARIA Award.",
+      "agent_02": "The Drift did not win the ARIA Award.",
+      "agent_03": "The artist who debuted in the 2000s did not win the ARIA Award.",
+      "agent_04": "Senzo Malik plays R&B.",
+      "agent_05": "Tom\u00e1s Vidal did not win the MOBO Award.",
+      "agent_06": "Nneka Abara does not play Classical.",
+      "agent_07": "Tom\u00e1s Vidal is not from Nigeria.",
+      "agent_08": "The artist who debuted in the 1990s is not from Australia.",
+      "agent_09": "The artist who debuted in the 2010s did not win the ARIA Award.",
+      "agent_10": "Senzo Malik debuted in the 1980s.",
+      "agent_11": "The Drift does not play Classical.",
+      "agent_12": "The artist who debuted in the 2010s is not from the US.",
+      "agent_13": "The Afrobeats artist did not win the Grammy.",
+      "agent_14": "The Drift does not play Afrobeats.",
+      "agent_15": "The Hip-Hop artist did not debut in the 2000s.",
+      "agent_16": "The Classical artist did not win the Mercury Prize.",
+      "agent_17": "The Drift won the Mercury Prize.",
+      "agent_18": "The Drift did not win the Grammy.",
+      "agent_19": "The Classical artist is not from Nigeria."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 23,
+    "artists": [
+      "Pedro Salvaje",
+      "Nneka Abara",
+      "Remy Vail",
+      "Senzo Malik",
+      "Hana Voss"
+    ],
+    "artist_attributes": {
+      "Pedro Salvaje": {
+        "genre": "Reggae",
+        "decade": "1990s",
+        "nationality": "Brazil",
+        "award": "Latin Grammy"
+      },
+      "Nneka Abara": {
+        "genre": "Afrobeats",
+        "decade": "2010s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Remy Vail": {
+        "genre": "Jazz",
+        "decade": "2000s",
+        "nationality": "France",
+        "award": "Victoires"
+      },
+      "Senzo Malik": {
+        "genre": "R&B",
+        "decade": "1980s",
+        "nationality": "Australia",
+        "award": "ARIA Award"
+      },
+      "Hana Voss": {
+        "genre": "Country",
+        "decade": "1970s",
+        "nationality": "Germany",
+        "award": "NHK Award"
+      }
+    },
+    "question": "Which artist won the Victoires?",
+    "answer": "Remy Vail",
+    "candidates": [
+      "Nneka Abara",
+      "Pedro Salvaje",
+      "Hana Voss",
+      "Remy Vail",
+      "Senzo Malik"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist who debuted in the 1970s is not from France.",
+      "agent_01": "Pedro Salvaje did not win the MOBO Award.",
+      "agent_02": "Pedro Salvaje does not play Jazz.",
+      "agent_03": "The artist who debuted in the 2000s is not from Australia.",
+      "agent_04": "The Reggae artist did not win the ARIA Award.",
+      "agent_05": "Senzo Malik did not debut in the 1970s.",
+      "agent_06": "Hana Voss is not from Australia.",
+      "agent_07": "The artist from Brazil did not win the ARIA Award.",
+      "agent_08": "Nneka Abara does not play Country.",
+      "agent_09": "Hana Voss won the NHK Award.",
+      "agent_10": "The R&B artist did not win the MOBO Award.",
+      "agent_11": "Nneka Abara is not from France.",
+      "agent_12": "Senzo Malik debuted in the 1980s.",
+      "agent_13": "Senzo Malik won the ARIA Award.",
+      "agent_14": "The artist who debuted in the 1980s is not from Brazil.",
+      "agent_15": "Senzo Malik did not win the MOBO Award.",
+      "agent_16": "The artist from Germany did not win the Victoires.",
+      "agent_17": "The artist from Brazil did not win the MOBO Award.",
+      "agent_18": "Senzo Malik does not play Jazz.",
+      "agent_19": "Pedro Salvaje did not debut in the 1980s."
+    },
+    "n_clues": 20
+  },
+  {
+    "task_id": 24,
+    "artists": [
+      "Miles Corrigan",
+      "Seraphina \u00d3",
+      "Luka Dray",
+      "Celeste Nweke",
+      "Colette Beaumont"
+    ],
+    "artist_attributes": {
+      "Miles Corrigan": {
+        "genre": "Jazz",
+        "decade": "1970s",
+        "nationality": "the US",
+        "award": "Grammy"
+      },
+      "Seraphina \u00d3": {
+        "genre": "Classical",
+        "decade": "1990s",
+        "nationality": "Ireland",
+        "award": "Mercury Prize"
+      },
+      "Luka Dray": {
+        "genre": "Hip-Hop",
+        "decade": "2010s",
+        "nationality": "Canada",
+        "award": "Juno Award"
+      },
+      "Celeste Nweke": {
+        "genre": "R&B",
+        "decade": "2000s",
+        "nationality": "Nigeria",
+        "award": "MOBO Award"
+      },
+      "Colette Beaumont": {
+        "genre": "Pop",
+        "decade": "1980s",
+        "nationality": "France",
+        "award": "Victoires"
+      }
+    },
+    "question": "Which artist plays R&B?",
+    "answer": "Celeste Nweke",
+    "candidates": [
+      "Miles Corrigan",
+      "Seraphina \u00d3",
+      "Luka Dray",
+      "Colette Beaumont",
+      "Celeste Nweke"
+    ],
+    "agent_clues": {
+      "agent_00": "The artist who debuted in the 1980s is not from the US.",
+      "agent_01": "Celeste Nweke did not debut in the 2010s.",
+      "agent_02": "The Jazz artist is not from France.",
+      "agent_03": "Luka Dray is not from Ireland.",
+      "agent_04": "The artist who debuted in the 2010s is not from Ireland.",
+      "agent_05": "Seraphina \u00d3 is from Ireland.",
+      "agent_06": "The artist who debuted in the 1990s did not win the MOBO Award.",
+      "agent_07": "The artist who debuted in the 1970s is not from Canada.",
+      "agent_08": "The Classical artist did not debut in the 2010s.",
+      "agent_09": "Celeste Nweke did not win the Juno Award.",
+      "agent_10": "Luka Dray did not win the Victoires.",
+      "agent_11": "The R&B artist is not from France.",
+      "agent_12": "Celeste Nweke is from Nigeria.",
+      "agent_13": "The Pop artist did not win the Mercury Prize.",
+      "agent_14": "Seraphina \u00d3 does not play Pop.",
+      "agent_15": "The artist from Ireland did not win the Victoires.",
+      "agent_16": "The artist who debuted in the 2010s did not win the Victoires.",
+      "agent_17": "The R&B artist did not win the Grammy.",
+      "agent_18": "The artist from the US did not win the MOBO Award.",
+      "agent_19": "The Jazz artist did not win the Mercury Prize."
+    },
+    "n_clues": 20
+  }
+]

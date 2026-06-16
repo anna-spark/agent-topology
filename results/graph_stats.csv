@@ -1,0 +1,2 @@
+topology,n_nodes,n_edges,edge_density,n_components,diameter,avg_shortest_path,avg_clustering,avg_degree,max_degree,min_degree,max_betweenness,avg_betweenness,bottleneck_agent
+chain,20,19,0.1,1,19,7.0,0.0,1.9,2,1,0.5263157894736842,0.3333333333333333,agent_09
