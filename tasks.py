@@ -1,22 +1,7 @@
-
 """
 tasks.py
 --------
 Generates distributed logic-grid puzzle instances for topology experiments.
- 
-Each puzzle:
-  - Picks 5 fake musical artists from a pool of 20
-  - Each artist has 4 attributes: genre, decade, nationality, award
-  - Generates exactly 20 diverse atomic elimination clues from ground truth
-  - Verifies via constraint solver that clues uniquely determine the solution
-  - Distributes one clue per agent (N=20 agents, every agent gets a real clue)
-  - Single-agent baseline uses an actual LLM call with only one clue
- 
-Usage:
-    python tasks.py                        # generate & save 25 instances
-    python tasks.py --n 30                 # generate 30 instances
-    python tasks.py --verify-only          # verify saved tasks
-    python tasks.py --baseline             # run LLM single-agent baseline
 """
  
 import json
@@ -65,11 +50,7 @@ QUESTION_TEMPLATES = [
     ("decade",      "Which artist debuted in the {val}?"),
 ]
  
-# Clue type buckets for diversity enforcement
-# Each bucket key = (attr1, attr2) pair or ("name", attr)
-# We cap how many clues come from each bucket
 MAX_PER_BUCKET = 3
- 
  
 # ---------------------------------------------------------------------------
 # Clue templates
@@ -98,7 +79,6 @@ NEG_CROSS_TEMPLATES = {
     ("nationality", "award"):       "The artist from {val1} did not win the {val2}.",
 }
  
- 
 # ---------------------------------------------------------------------------
 # Constraint solver
 # ---------------------------------------------------------------------------
@@ -106,65 +86,66 @@ NEG_CROSS_TEMPLATES = {
 def is_uniquely_solvable(artists: list[dict], clue_texts: list[str]) -> bool:
     """
     Returns True iff clue_texts uniquely determine the correct assignment.
-    Uses python-constraint CSP solver with positive clues as hard constraints.
     """
     names = [a["name"] for a in artists]
-    truth = {a["name"]: a for a in artists}
- 
     problem = Problem()
+    
     for name in names:
         for attr in ATTRIBUTES:
-            domain = [a[attr] for a in artists if a["name"] == name]
+            domain = [a[attr] for a in artists]
             problem.addVariable(f"{name}_{attr}", domain)
  
-    # All attribute values must be unique across artists (logic grid constraint)
     for attr in ATTRIBUTES:
-        problem.addConstraint(
-            AllDifferentConstraint(),
-            [f"{name}_{attr}" for name in names]
-        )
+        problem.addConstraint(AllDifferentConstraint(), [f"{name}_{attr}" for name in names])
  
-    # Positive clues fix variables
+    # Evaluate all clue strings into constraints dynamically
     for text in clue_texts:
         for a in artists:
-            if POS_TEMPLATES["genre"].format(name=a["name"], val=a["genre"]) == text:
-                problem.addConstraint(
-                    lambda v, val=a["genre"]: v == val, [f"{a['name']}_genre"])
-            if POS_TEMPLATES["decade"].format(name=a["name"], val=a["decade"]) == text:
-                problem.addConstraint(
-                    lambda v, val=a["decade"]: v == val, [f"{a['name']}_decade"])
-            if POS_TEMPLATES["nationality"].format(name=a["name"], val=a["nationality"]) == text:
-                problem.addConstraint(
-                    lambda v, val=a["nationality"]: v == val, [f"{a['name']}_nationality"])
-            if POS_TEMPLATES["award"].format(name=a["name"], val=a["award"]) == text:
-                problem.addConstraint(
-                    lambda v, val=a["award"]: v == val, [f"{a['name']}_award"])
+            name = a["name"]
+            for attr in ATTRIBUTES:
+                val = a[attr]
+                
+                # Positive Clues
+                if POS_TEMPLATES[attr].format(name=name, val=val) == text:
+                    problem.addConstraint(lambda v, target=val: v == target, [f"{name}_{attr}"])
+                
+                # Negative Name Clues
+                if NEG_NAME_TEMPLATES[attr].format(name=name, val=val) == text:
+                    problem.addConstraint(lambda v, target=val: v != target, [f"{name}_{attr}"])
+
+        # Negative Cross Clues
+        for (attr1, attr2), tmpl in NEG_CROSS_TEMPLATES.items():
+            for a in artists:
+                for b in artists:
+                    if tmpl.format(val1=a[attr1], val2=b[attr2]) == text:
+                        # If artist X has attr1 == val1, then artist X cannot have attr2 == val2
+                        def cross_constraint(v1, v2, v1_target=a[attr1], v2_target=b[attr2]):
+                            if v1 == v1_target:
+                                return v2 != v2_target
+                            return True
+                        
+                        for name in names:
+                            problem.addConstraint(cross_constraint, [f"{name}_{attr1}", f"{name}_{attr2}"])
  
     solutions = problem.getSolutions()
     return len(solutions) == 1
- 
  
 # ---------------------------------------------------------------------------
 # Clue generation with diversity enforcement
 # ---------------------------------------------------------------------------
  
 def build_clue_pool(artists: list[dict]) -> list[tuple]:
-    """
-    Build all valid atomic clues for a given set of 5 artists.
-    Each item: (bucket_key, text)
-    bucket_key is used to enforce diversity caps.
-    """
     truth = {a["name"]: a for a in artists}
     val_to_name = {(attr, a[attr]): a["name"] for a in artists for attr in ATTRIBUTES}
     pool = []
  
-    # Positive clues — bucket: ("pos", attr)
+    # Positive clues
     for a in artists:
         for attr in ATTRIBUTES:
             text = POS_TEMPLATES[attr].format(name=a["name"], val=a[attr])
             pool.append((("pos", attr), text))
  
-    # Negative name clues — bucket: ("neg_name", attr)
+    # Negative name clues
     for a in artists:
         for attr in ATTRIBUTES:
             for other_a in artists:
@@ -174,7 +155,7 @@ def build_clue_pool(artists: list[dict]) -> list[tuple]:
                 text = NEG_NAME_TEMPLATES[attr].format(name=a["name"], val=wrong_val)
                 pool.append((("neg_name", attr), text))
  
-    # Negative cross clues — bucket: ("neg_cross", attr1, attr2)
+    # Negative cross clues
     for (attr1, attr2), tmpl in NEG_CROSS_TEMPLATES.items():
         for a in artists:
             for b in artists:
@@ -185,7 +166,6 @@ def build_clue_pool(artists: list[dict]) -> list[tuple]:
                     text = tmpl.format(val1=a[attr1], val2=b[attr2])
                     pool.append((("neg_cross", attr1, attr2), text))
  
-    # Deduplicate by text
     seen = set()
     deduped = []
     for bucket, text in pool:
@@ -195,22 +175,12 @@ def build_clue_pool(artists: list[dict]) -> list[tuple]:
  
     return deduped
  
- 
 def generate_clues(artists: list[dict], rng: random.Random, n_clues: int = 20) -> list[str]:
-    """
-    Generate exactly n_clues diverse atomic clues that uniquely constrain the solution.
- 
-    Strategy:
-    1. Shuffle the full clue pool
-    2. Greedy-select clues while enforcing bucket diversity caps
-    3. Once unique solvability is confirmed, pad with remaining diverse clues
-    4. Final shuffle so clue order gives no positional hints
-    """
     pool = build_clue_pool(artists)
     rng.shuffle(pool)
  
-    bucket_counts: dict = defaultdict(int)
-    selected_texts: list[str] = []
+    bucket_counts = defaultdict(int)
+    selected_texts = []
     solved = False
  
     for bucket, text in pool:
@@ -220,22 +190,17 @@ def generate_clues(artists: list[dict], rng: random.Random, n_clues: int = 20) -
         bucket_counts[bucket] += 1
         if not solved and is_uniquely_solvable(artists, selected_texts):
             solved = True
-            # Keep going to pad to n_clues with diverse remaining clues
  
     if not solved:
-        # Fallback: relax diversity cap and use all positive clues
         all_pos = [
             POS_TEMPLATES[attr].format(name=a["name"], val=a[attr])
             for a in artists for attr in ATTRIBUTES
         ]
-        selected_texts = list(dict.fromkeys(all_pos))  # deduplicate, preserve order
+        selected_texts = list(dict.fromkeys(all_pos))
  
-    # Trim or pad to exactly n_clues
     if len(selected_texts) > n_clues:
-        # Keep first n_clues (already diversity-ordered)
         selected_texts = selected_texts[:n_clues]
     elif len(selected_texts) < n_clues:
-        # Pad with any remaining unused clues
         used = set(selected_texts)
         extras = [t for _, t in pool if t not in used]
         selected_texts += extras[: n_clues - len(selected_texts)]
@@ -243,32 +208,23 @@ def generate_clues(artists: list[dict], rng: random.Random, n_clues: int = 20) -
     rng.shuffle(selected_texts)
     return selected_texts[:n_clues]
  
- 
 # ---------------------------------------------------------------------------
 # Task generation
 # ---------------------------------------------------------------------------
  
-def generate_task_instances(
-    n_instances: int = 25,
-    n_agents: int = 20,
-    seed: int = 42,
-) -> list[dict]:
+def generate_task_instances(n_instances: int = 25, n_agents: int = 20, seed: int = 42) -> list[dict]:
     rng = random.Random(seed)
- 
-    # Pre-shuffle all 5-artist combinations
     all_combos = list(itertools.combinations(range(len(ARTIST_POOL)), 5))
     rng.shuffle(all_combos)
  
     instances = []
-    answer_counts: dict = defaultdict(int)  # track answer frequency per artist
+    answer_counts = defaultdict(int)
  
     for indices in all_combos:
         if len(instances) >= n_instances:
             break
  
         artists = [ARTIST_POOL[i] for i in indices]
- 
-        # Skip combos where any attribute value is duplicated among the 5 artists
         skip = False
         for attr in ATTRIBUTES:
             vals = [a[attr] for a in artists]
@@ -278,24 +234,16 @@ def generate_task_instances(
         if skip:
             continue
  
-        # Generate diverse clues
         clues = generate_clues(artists, rng, n_clues=n_agents)
- 
-        if len(clues) < n_agents:
+        if len(clues) < n_agents or not is_uniquely_solvable(artists, clues):
             continue
  
-        if not is_uniquely_solvable(artists, clues):
-            continue
- 
-        # Pick question — weight against overused answer artists
         q_attr, q_tmpl = rng.choice(QUESTION_TEMPLATES)
- 
-        # Sort artists by how often they've been answers (ascending) and pick from least-used
         sorted_artists = sorted(artists, key=lambda a: answer_counts[a["name"]])
-        # Weighted sample: prefer less-used artists
         weights = [1.0 / (1 + answer_counts[a["name"]]) for a in sorted_artists]
         total = sum(weights)
         weights = [w / total for w in weights]
+        
         r = rng.random()
         cumulative = 0.0
         answer_artist = sorted_artists[-1]
@@ -330,12 +278,8 @@ def generate_task_instances(
         print(f"  Generated task {len(instances)}/{n_instances}: '{question}' → {answer}")
  
     if len(instances) < n_instances:
-        raise RuntimeError(
-            f"Only generated {len(instances)}/{n_instances} valid instances. "
-            "Try reducing n_instances or relaxing diversity constraints."
-        )
+        raise RuntimeError(f"Only generated {len(instances)}/{n_instances} valid instances.")
  
-    # Print answer distribution
     print("\nAnswer distribution:")
     for name, count in sorted(answer_counts.items(), key=lambda x: -x[1]):
         if count > 0:
@@ -343,26 +287,15 @@ def generate_task_instances(
  
     return instances
  
- 
-# ---------------------------------------------------------------------------
-# Save / load
-# ---------------------------------------------------------------------------
- 
 def save_tasks(instances: list[dict], path: str = "results/tasks.json") -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         json.dump(instances, f, indent=2)
     print(f"\nSaved {len(instances)} task instances to {path}")
  
- 
 def load_tasks(path: str = "results/tasks.json") -> list[dict]:
     with open(path) as f:
         return json.load(f)
- 
- 
-# ---------------------------------------------------------------------------
-# Pretty print
-# ---------------------------------------------------------------------------
  
 def print_task(task: dict) -> None:
     print(f"\n{'='*60}")
@@ -376,24 +309,11 @@ def print_task(task: dict) -> None:
     for agent_id, clue in task["agent_clues"].items():
         print(f"  {agent_id}: {clue}")
  
- 
 # ---------------------------------------------------------------------------
-# Single-agent LLM baseline
-# Matches spec: agent sees only its ONE clue, no communication
+# Single-agent LLM baseline (Strict matching implemented)
 # ---------------------------------------------------------------------------
  
-def single_agent_baseline(
-    instances: list[dict],
-    clue_index: int = 0,
-    model: str = "claude-haiku-4-5-20251001",
-) -> dict:
-    """
-    Run a real LLM single-agent baseline.
-    Each instance: agent_{clue_index:02d} sees only its own clue, then guesses.
-    This demonstrates that no single clue is sufficient to answer reliably.
- 
-    Returns dict with accuracy and per-task results.
-    """
+def single_agent_baseline(instances: list[dict], clue_index: int = 0, model: str = "claude-haiku-4-5-20251001") -> dict:
     client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
     results = []
  
@@ -404,17 +324,7 @@ def single_agent_baseline(
         candidates = inst["candidates"]
         answer = inst["answer"]
  
-        prompt = f"""You are trying to solve a music trivia puzzle.
- 
-You have been given ONE clue about a group of 5 artists:
-Clue: {clue}
- 
-The artists in this puzzle are: {", ".join(candidates)}
- 
-Question: {question}
- 
-You must choose exactly one artist from the list above.
-Reply with ONLY the artist's name, nothing else."""
+        prompt = f"You are trying to solve a music trivia puzzle.\n\nYou have been given ONE clue about a group of 5 artists:\nClue: {clue}\n\nThe artists in this puzzle are: {', '.join(candidates)}\n\nQuestion: {question}\n\nYou must choose exactly one artist from the list above.\nReply with ONLY the artist's name, nothing else."
  
         response = client.messages.create(
             model=model,
@@ -423,10 +333,11 @@ Reply with ONLY the artist's name, nothing else."""
         )
  
         raw = response.content[0].text.strip()
-        # Match to closest candidate
+        clean_raw = raw.strip().strip('"').strip("'").lower()
         guess = raw
+        
         for c in candidates:
-            if c.lower() in raw.lower() or raw.lower() in c.lower():
+            if c.lower() == clean_raw:
                 guess = c
                 break
  
@@ -445,14 +356,7 @@ Reply with ONLY the artist's name, nothing else."""
  
     accuracy = sum(r["correct"] for r in results) / len(results)
     print(f"\nSingle-agent baseline accuracy: {accuracy:.1%}  ({sum(r['correct'] for r in results)}/{len(results)} correct)")
-    print(f"(Using clue from {agent_id} only — no communication)")
- 
     return {"accuracy": accuracy, "results": results}
- 
- 
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
  
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -470,30 +374,16 @@ if __name__ == "__main__":
         all_ok = True
         for inst in instances:
             clues = list(inst["agent_clues"].values())
-            artists_raw = [
-                {"name": name, **attrs}
-                for name, attrs in inst["artist_attributes"].items()
-            ]
+            artists_raw = [{"name": name, **attrs} for name, attrs in inst["artist_attributes"].items()]
             ok = is_uniquely_solvable(artists_raw, clues)
             status = "✓ unique" if ok else "✗ NOT uniquely solvable"
             print(f"  Task {inst['task_id']:2d}: {status}")
             if not ok:
                 all_ok = False
         print(f"\n{'All tasks verified OK!' if all_ok else 'WARNING: some tasks failed verification'}")
- 
     elif args.baseline:
         instances = load_tasks()
-        print(f"Running single-agent LLM baseline on {len(instances)} tasks...")
-        print(f"(Agent sees only clue #{args.clue_index} — no communication)\n")
         result = single_agent_baseline(instances, clue_index=args.clue_index)
- 
     else:
-        print(f"Generating {args.n} task instances with {args.agents} agents each...")
-        instances = generate_task_instances(
-            n_instances=args.n,
-            n_agents=args.agents,
-            seed=args.seed,
-        )
+        instances = generate_task_instances(n_instances=args.n, n_agents=args.agents, seed=args.seed)
         save_tasks(instances)
-        print("\n--- Example Task ---")
-        print_task(instances[0])

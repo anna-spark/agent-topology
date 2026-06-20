@@ -6,4 +6,4 @@ pandas
 matplotlib
 seaborn
 tqdm
-python-dotenv
+python-dotenvgoogle-genai

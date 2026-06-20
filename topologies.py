@@ -6,10 +6,13 @@ Constructs communication graphs for multi-agent topology experiments.
 All graphs use agent IDs as node labels (e.g. "agent_00", "agent_01", ...).
 
 Implemented topologies:
-  - chain       : linear path graph
-  - tree        : balanced binary tree
-  - random      : Erdos-Renyi random graph (connected)
-  - small_world : Watts-Strogatz small-world graph
+  - chain           : linear path graph
+  - tree            : balanced binary tree
+  - random          : Erdos-Renyi random graph (connected)
+  - small_world     : Watts-Strogatz small-world graph
+  - modular         : community cliques connected by bridge nodes
+  - scale_free      : Barabasi-Albert preferential attachment
+  - fully_connected : complete graph (theoretical upper bound)
 
 Each function returns a networkx Graph.
 """
@@ -110,21 +113,90 @@ def make_small_world(n: int, k: int = 4, p: float = 0.2, seed: int = 42) -> nx.G
 
 
 # ---------------------------------------------------------------------------
+# Modular (community structure with bridge nodes)
+# ---------------------------------------------------------------------------
+
+def make_modular(n: int, n_communities: int = 4, seed: int = 42) -> nx.Graph:
+    """
+    Agents partitioned into n_communities communities, connected by sparse
+    bridge edges. Within each community agents form a clique.
+    Models specialization: agents share info locally, bridges carry it globally.
+    """
+    ids = get_agent_ids(n)
+    rng = random.Random(seed)
+    G = nx.Graph()
+    G.add_nodes_from(ids)
+
+    # Split agents into communities as evenly as possible
+    communities = [[] for _ in range(n_communities)]
+    for i, aid in enumerate(ids):
+        communities[i % n_communities].append(aid)
+
+    # Within each community: fully connected clique
+    for community in communities:
+        for u, v in nx.complete_graph(community).edges():
+            G.add_edge(u, v)
+
+    # Between communities: one random bridge edge per adjacent community pair
+    for i in range(n_communities):
+        j = (i + 1) % n_communities
+        bridge_u = rng.choice(communities[i])
+        bridge_v = rng.choice(communities[j])
+        G.add_edge(bridge_u, bridge_v)
+
+    return G
+
+
+# ---------------------------------------------------------------------------
+# Scale-free (Barabasi-Albert preferential attachment)
+# ---------------------------------------------------------------------------
+
+def make_scale_free(n: int, m: int = 2, seed: int = 42) -> nx.Graph:
+    """
+    Barabasi-Albert scale-free graph.
+    m = edges added per new node (controls density)
+    P(k) ~ k^-gamma: a few hub agents accumulate most connections.
+    Models influence concentration and efficient dissemination.
+    """
+    ids = get_agent_ids(n)
+    G_int = nx.barabasi_albert_graph(n, m=m, seed=seed)
+    mapping = {i: ids[i] for i in range(n)}
+    return nx.relabel_nodes(G_int, mapping)
+
+
+# ---------------------------------------------------------------------------
+# Fully connected (theoretical upper bound)
+# ---------------------------------------------------------------------------
+
+def make_fully_connected(n: int) -> nx.Graph:
+    """
+    Complete graph: every agent communicates with every other agent.
+    Theoretical performance ceiling — diameter = 1, no bottlenecks.
+    Useful as an upper bound baseline.
+    """
+    ids = get_agent_ids(n)
+    return nx.complete_graph(ids)
+
+
+# ---------------------------------------------------------------------------
 # Registry — easy lookup by name
 # ---------------------------------------------------------------------------
 
 TOPOLOGY_BUILDERS = {
-    "chain":       make_chain,
-    "tree":        make_tree,
-    "random":      make_random,
-    "small_world": make_small_world,
+    "chain":           make_chain,
+    "tree":            make_tree,
+    "random":          make_random,
+    "small_world":     make_small_world,
+    "modular":         make_modular,
+    "scale_free":      make_scale_free,
+    "fully_connected": make_fully_connected,
 }
 
 
 def get_topology(name: str, n: int, seed: int = 42) -> nx.Graph:
     if name not in TOPOLOGY_BUILDERS:
         raise ValueError(f"Unknown topology '{name}'. Choose from: {list(TOPOLOGY_BUILDERS)}")
-    if name in ("random", "small_world"):
+    if name in ("random", "small_world", "modular", "scale_free"):
         return TOPOLOGY_BUILDERS[name](n, seed=seed)
     return TOPOLOGY_BUILDERS[name](n)
 

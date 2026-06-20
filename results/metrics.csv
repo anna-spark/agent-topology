@@ -1,0 +1,176 @@
+task_id,topology,correct,majority_answer,correct_answer,vote_agreement,n_rounds,model,timestamp
+0,chain,False,Pedro Salvaje,Celeste Nweke,0.3,3,claude-haiku-4-5-20251001,2026-06-17T09:45:55.104326
+1,chain,False,Senzo Malik,Sable Finch,0.65,3,claude-haiku-4-5-20251001,2026-06-17T09:48:08.617583
+2,chain,True,Senzo Malik,Senzo Malik,0.3,3,claude-haiku-4-5-20251001,2026-06-17T09:50:24.541925
+3,chain,True,Seraphina Ó,Seraphina Ó,0.5,3,claude-haiku-4-5-20251001,2026-06-17T09:52:47.340101
+4,chain,True,DJ Thunderclap,DJ Thunderclap,0.45,3,claude-haiku-4-5-20251001,2026-06-17T09:55:00.367034
+5,chain,False,Nneka Abara,The Riven,0.3,3,claude-haiku-4-5-20251001,2026-06-17T09:57:23.898254
+6,chain,True,Nneka Abara,Nneka Abara,0.85,3,claude-haiku-4-5-20251001,2026-06-17T09:59:30.764697
+7,chain,True,Celeste Nweke,Celeste Nweke,1.0,3,claude-haiku-4-5-20251001,2026-06-17T10:01:46.602036
+8,chain,True,Yuki Tanase,Yuki Tanase,0.65,3,claude-haiku-4-5-20251001,2026-06-17T10:04:03.666422
+9,chain,False,Remy Vail,Sable Finch,0.4,3,claude-haiku-4-5-20251001,2026-06-17T10:06:17.033073
+10,chain,False,Tomás Vidal,Kaia Storm,0.5,3,claude-haiku-4-5-20251001,2026-06-17T10:08:31.094832
+11,chain,True,Tomás Vidal,Tomás Vidal,0.65,3,claude-haiku-4-5-20251001,2026-06-17T10:11:00.912793
+12,chain,True,Pedro Salvaje,Pedro Salvaje,0.3,3,claude-haiku-4-5-20251001,2026-06-17T10:13:25.536242
+13,chain,False,Senzo Malik,Hana Voss,0.75,3,claude-haiku-4-5-20251001,2026-06-17T10:15:37.740471
+14,chain,True,Tomás Vidal,Tomás Vidal,0.4,3,claude-haiku-4-5-20251001,2026-06-17T10:17:48.704492
+15,chain,False,Frost Ellery,Tomás Vidal,0.45,3,claude-haiku-4-5-20251001,2026-06-17T10:19:55.996268
+16,chain,True,Yuki Tanase,Yuki Tanase,1.0,3,claude-haiku-4-5-20251001,2026-06-17T10:22:28.384861
+17,chain,False,Miles Corrigan,Luka Dray,0.45,3,claude-haiku-4-5-20251001,2026-06-17T10:24:40.175854
+18,chain,False,Senzo Malik,DJ Thunderclap,0.35,3,claude-haiku-4-5-20251001,2026-06-17T10:26:47.706690
+19,chain,True,DJ Thunderclap,DJ Thunderclap,0.9,3,claude-haiku-4-5-20251001,2026-06-17T10:28:59.228354
+20,chain,False,Frost Ellery,Kaia Storm,0.45,3,claude-haiku-4-5-20251001,2026-06-17T10:31:16.855384
+21,chain,False,Miles Corrigan,Sable Finch,0.75,3,claude-haiku-4-5-20251001,2026-06-17T10:33:30.663772
+22,chain,False,Kaia Storm,The Drift,0.25,3,claude-haiku-4-5-20251001,2026-06-17T10:35:41.757342
+23,chain,False,Pedro Salvaje,Remy Vail,0.45,3,claude-haiku-4-5-20251001,2026-06-17T10:37:57.287937
+24,chain,True,Celeste Nweke,Celeste Nweke,0.7,3,claude-haiku-4-5-20251001,2026-06-17T10:40:07.038661
+0,tree,False,Yuki Tanase,Celeste Nweke,0.4,3,claude-haiku-4-5-20251001,2026-06-17T10:42:15.795952
+1,tree,False,Senzo Malik,Sable Finch,0.8,3,claude-haiku-4-5-20251001,2026-06-17T10:44:23.175427
+2,tree,False,Remy Vail,Senzo Malik,0.35,3,claude-haiku-4-5-20251001,2026-06-17T10:46:30.613201
+3,tree,False,Hana Voss,Seraphina Ó,0.45,3,claude-haiku-4-5-20251001,2026-06-17T10:48:38.997449
+4,tree,True,DJ Thunderclap,DJ Thunderclap,0.65,3,claude-haiku-4-5-20251001,2026-06-17T10:50:50.065541
+5,tree,False,DJ Thunderclap,The Riven,0.3,3,claude-haiku-4-5-20251001,2026-06-17T10:53:08.923414
+6,tree,True,Nneka Abara,Nneka Abara,1.0,3,claude-haiku-4-5-20251001,2026-06-17T10:56:24.831976
+7,tree,True,Celeste Nweke,Celeste Nweke,1.0,3,claude-haiku-4-5-20251001,2026-06-17T10:58:43.362639
+8,tree,True,Yuki Tanase,Yuki Tanase,0.6,3,claude-haiku-4-5-20251001,2026-06-17T11:01:24.924159
+9,tree,False,Remy Vail,Sable Finch,0.4,3,claude-haiku-4-5-20251001,2026-06-17T11:03:34.793583
+10,tree,False,Tomás Vidal,Kaia Storm,0.3,3,claude-haiku-4-5-20251001,2026-06-17T11:05:39.933351
+11,tree,True,Tomás Vidal,Tomás Vidal,0.6,3,claude-haiku-4-5-20251001,2026-06-17T11:07:51.337484
+12,tree,True,Pedro Salvaje,Pedro Salvaje,0.45,3,claude-haiku-4-5-20251001,2026-06-17T11:10:02.844902
+13,tree,False,Senzo Malik,Hana Voss,0.45,3,claude-haiku-4-5-20251001,2026-06-17T11:12:18.750231
+14,tree,True,Tomás Vidal,Tomás Vidal,0.6,3,claude-haiku-4-5-20251001,2026-06-17T11:14:28.307474
+15,tree,False,Frost Ellery,Tomás Vidal,0.45,3,claude-haiku-4-5-20251001,2026-06-17T11:16:36.721226
+16,tree,True,Yuki Tanase,Yuki Tanase,0.9,3,claude-haiku-4-5-20251001,2026-06-17T11:18:52.250481
+17,tree,False,Miles Corrigan,Luka Dray,0.35,3,claude-haiku-4-5-20251001,2026-06-17T11:21:03.541428
+18,tree,False,Senzo Malik,DJ Thunderclap,0.45,3,claude-haiku-4-5-20251001,2026-06-17T11:23:16.133121
+19,tree,True,DJ Thunderclap,DJ Thunderclap,0.75,3,claude-haiku-4-5-20251001,2026-06-17T11:25:26.393854
+20,tree,False,Frost Ellery,Kaia Storm,0.4,3,claude-haiku-4-5-20251001,2026-06-17T11:27:48.629931
+21,tree,False,Miles Corrigan,Sable Finch,0.5,3,claude-haiku-4-5-20251001,2026-06-17T11:30:07.102962
+22,tree,False,Senzo Malik,The Drift,0.55,3,claude-haiku-4-5-20251001,2026-06-17T11:32:21.634730
+23,tree,True,Remy Vail,Remy Vail,0.6,3,claude-haiku-4-5-20251001,2026-06-17T12:36:08.132638
+24,tree,True,Celeste Nweke,Celeste Nweke,0.7,3,claude-haiku-4-5-20251001,2026-06-17T12:38:29.032091
+0,random,False,Yuki Tanase,Celeste Nweke,0.8,3,claude-haiku-4-5-20251001,2026-06-17T12:40:53.828755
+1,random,False,Senzo Malik,Sable Finch,0.7,3,claude-haiku-4-5-20251001,2026-06-17T12:43:11.138933
+2,random,False,Yuki Tanase,Senzo Malik,0.45,3,claude-haiku-4-5-20251001,2026-06-17T12:45:29.284916
+3,random,True,Seraphina Ó,Seraphina Ó,1.0,3,claude-haiku-4-5-20251001,2026-06-17T12:47:42.049820
+4,random,True,DJ Thunderclap,DJ Thunderclap,1.0,3,claude-haiku-4-5-20251001,2026-06-17T12:49:56.696477
+5,random,False,Nneka Abara,The Riven,0.45,3,claude-haiku-4-5-20251001,2026-06-17T12:52:23.949528
+6,random,False,The Riven,Nneka Abara,0.6,3,claude-haiku-4-5-20251001,2026-06-17T12:54:43.420064
+7,random,True,Celeste Nweke,Celeste Nweke,1.0,3,claude-haiku-4-5-20251001,2026-06-17T12:57:19.982958
+8,random,True,Yuki Tanase,Yuki Tanase,0.8,3,claude-haiku-4-5-20251001,2026-06-17T12:59:50.833254
+9,random,False,Remy Vail,Sable Finch,0.65,3,claude-haiku-4-5-20251001,2026-06-17T13:02:18.078388
+10,random,False,Tomás Vidal,Kaia Storm,0.45,3,claude-haiku-4-5-20251001,2026-06-17T13:04:51.113181
+11,random,True,Tomás Vidal,Tomás Vidal,0.45,3,claude-haiku-4-5-20251001,2026-06-17T13:07:14.219603
+12,random,True,Pedro Salvaje,Pedro Salvaje,0.45,3,claude-haiku-4-5-20251001,2026-06-17T13:10:35.909601
+13,random,False,The Drift,Hana Voss,0.7,3,claude-haiku-4-5-20251001,2026-06-17T13:46:33.900266
+14,random,True,Tomás Vidal,Tomás Vidal,1.0,3,claude-haiku-4-5-20251001,2026-06-17T13:49:00.646317
+15,random,False,Frost Ellery,Tomás Vidal,0.55,3,claude-haiku-4-5-20251001,2026-06-17T13:51:49.505342
+16,random,True,Yuki Tanase,Yuki Tanase,1.0,3,claude-haiku-4-5-20251001,2026-06-17T13:54:14.108427
+17,random,False,The Riven,Luka Dray,0.55,3,claude-haiku-4-5-20251001,2026-06-17T13:56:29.372547
+18,random,False,Senzo Malik,DJ Thunderclap,0.65,3,claude-haiku-4-5-20251001,2026-06-17T13:59:06.180821
+19,random,True,DJ Thunderclap,DJ Thunderclap,1.0,3,claude-haiku-4-5-20251001,2026-06-17T14:01:25.929856
+20,random,True,Kaia Storm,Kaia Storm,0.85,3,claude-haiku-4-5-20251001,2026-06-17T14:03:50.658534
+21,random,False,Miles Corrigan,Sable Finch,0.95,3,claude-haiku-4-5-20251001,2026-06-17T14:06:13.303121
+22,random,False,Kaia Storm,The Drift,0.45,3,claude-haiku-4-5-20251001,2026-06-17T14:08:29.702048
+23,random,True,Remy Vail,Remy Vail,0.8,3,claude-haiku-4-5-20251001,2026-06-17T14:10:58.288586
+24,random,True,Celeste Nweke,Celeste Nweke,0.65,3,claude-haiku-4-5-20251001,2026-06-17T14:13:14.605117
+0,small_world,False,Yuki Tanase,Celeste Nweke,0.5,3,claude-haiku-4-5-20251001,2026-06-17T14:15:37.864742
+1,small_world,False,Senzo Malik,Sable Finch,0.5,3,claude-haiku-4-5-20251001,2026-06-17T14:17:56.910650
+2,small_world,False,,Senzo Malik,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:35.375966
+3,small_world,False,,Seraphina Ó,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:36.131500
+4,small_world,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:36.534303
+5,small_world,False,,The Riven,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:36.995450
+6,small_world,False,,Nneka Abara,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:37.407761
+7,small_world,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:37.841175
+8,small_world,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:38.256259
+9,small_world,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:38.664127
+10,small_world,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:39.057043
+11,small_world,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:39.439002
+12,small_world,False,,Pedro Salvaje,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:39.847423
+13,small_world,False,,Hana Voss,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:40.259956
+14,small_world,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:40.799035
+15,small_world,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:41.235031
+16,small_world,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:41.629092
+17,small_world,False,,Luka Dray,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:42.036160
+18,small_world,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:42.449048
+19,small_world,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:46.519932
+20,small_world,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:47.014811
+21,small_world,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:47.420711
+22,small_world,False,,The Drift,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:47.912097
+23,small_world,False,,Remy Vail,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:48.312181
+24,small_world,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:48.698445
+0,modular,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:49.131704
+1,modular,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:49.710344
+2,modular,False,,Senzo Malik,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:50.124666
+3,modular,False,,Seraphina Ó,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:50.513855
+4,modular,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:50.915368
+5,modular,False,,The Riven,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:51.316398
+6,modular,False,,Nneka Abara,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:51.807304
+7,modular,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:52.226352
+8,modular,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:52.625298
+9,modular,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:53.050859
+10,modular,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:53.471640
+11,modular,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:53.878684
+12,modular,False,,Pedro Salvaje,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:54.249082
+13,modular,False,,Hana Voss,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:54.645934
+14,modular,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:55.029499
+15,modular,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:55.507866
+16,modular,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:55.899740
+17,modular,False,,Luka Dray,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:56.319760
+18,modular,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:56.718553
+19,modular,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:57.136360
+20,modular,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:57.582740
+21,modular,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:57.992296
+22,modular,False,,The Drift,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:58.397542
+23,modular,False,,Remy Vail,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:58.783635
+24,modular,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:59.211823
+0,scale_free,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:18:59.683421
+1,scale_free,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:00.081350
+2,scale_free,False,,Senzo Malik,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:00.480937
+3,scale_free,False,,Seraphina Ó,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:00.940874
+4,scale_free,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:01.336643
+5,scale_free,False,,The Riven,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:02.006175
+6,scale_free,False,,Nneka Abara,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:02.419448
+7,scale_free,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:02.849219
+8,scale_free,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:03.269333
+9,scale_free,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:03.680079
+10,scale_free,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:04.062022
+11,scale_free,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:04.451077
+12,scale_free,False,,Pedro Salvaje,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:04.866016
+13,scale_free,False,,Hana Voss,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:05.281317
+14,scale_free,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:05.683696
+15,scale_free,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:06.095474
+16,scale_free,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:06.524648
+17,scale_free,False,,Luka Dray,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:06.942204
+18,scale_free,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:07.390109
+19,scale_free,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:07.798862
+20,scale_free,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:08.202718
+21,scale_free,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:08.606358
+22,scale_free,False,,The Drift,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:09.125780
+23,scale_free,False,,Remy Vail,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:09.560370
+24,scale_free,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:09.988195
+0,fully_connected,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:10.406119
+1,fully_connected,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:10.795734
+2,fully_connected,False,,Senzo Malik,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:11.187110
+3,fully_connected,False,,Seraphina Ó,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:11.633818
+4,fully_connected,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:12.029939
+5,fully_connected,False,,The Riven,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:12.426603
+6,fully_connected,False,,Nneka Abara,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:12.879857
+7,fully_connected,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:13.418629
+8,fully_connected,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:13.811658
+9,fully_connected,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:14.195645
+10,fully_connected,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:14.618693
+11,fully_connected,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:15.036651
+12,fully_connected,False,,Pedro Salvaje,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:15.474678
+13,fully_connected,False,,Hana Voss,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:15.868436
+14,fully_connected,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:16.268782
+15,fully_connected,False,,Tomás Vidal,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:16.677840
+16,fully_connected,False,,Yuki Tanase,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:17.079436
+17,fully_connected,False,,Luka Dray,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:17.490424
+18,fully_connected,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:17.882771
+19,fully_connected,False,,DJ Thunderclap,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:18.291121
+20,fully_connected,False,,Kaia Storm,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:18.700140
+21,fully_connected,False,,Sable Finch,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:19.126788
+22,fully_connected,False,,The Drift,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:19.537584
+23,fully_connected,False,,Remy Vail,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:19.929325
+24,fully_connected,False,,Celeste Nweke,0.0,3,claude-haiku-4-5-20251001,2026-06-17T14:19:20.342653

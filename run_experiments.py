@@ -3,23 +3,19 @@ run_experiments.py
 ------------------
 Runs all topology experiments and saves results.
 
-For each topology x task instance:
-  - Builds the communication graph
-  - Runs the multi-agent simulator
-  - Records accuracy, vote agreement, token usage, and full log
+Default model: gemini/gemini-2.0-flash-lite  (~free tier / very low cost)
+Set GEMINI_API_KEY in your environment before running.
 
-Usage:
-    python run_experiments.py                        # run all topologies, all tasks
-    python run_experiments.py --topologies chain tree  # run specific topologies
-    python run_experiments.py --tasks 0 1 2          # run specific task IDs
-    python run_experiments.py --dry-run              # print config, don't call API
-    python run_experiments.py --rounds 3             # set number of communication rounds
+To use Claude instead:
+    python run_experiments.py --model claude-haiku-4-5-20251001
+    (requires ANTHROPIC_API_KEY)
 """
 
 import os
 import json
 import argparse
 import time
+import random
 from pathlib import Path
 from datetime import datetime
 
@@ -33,21 +29,12 @@ from topologies import get_topology, compute_graph_stats, TOPOLOGY_BUILDERS
 from dotenv import load_dotenv
 load_dotenv()
 
-
-# ---------------------------------------------------------------------------
-# Config defaults
-# ---------------------------------------------------------------------------
-
-DEFAULT_TOPOLOGIES = ["chain", "tree", "random", "small_world"]
+DEFAULT_TOPOLOGIES = ["chain", "tree", "random", "small_world", "modular", "scale_free", "fully_connected"]
 DEFAULT_N_AGENTS   = 20
 DEFAULT_N_ROUNDS   = 3
-DEFAULT_MODEL      = "claude-haiku-4-5-20251001"
+DEFAULT_MODEL      = "gemini/gemini-2.0-flash-lite"   # ~free / near-zero cost
 DEFAULT_SEED       = 42
 
-
-# ---------------------------------------------------------------------------
-# Single experiment run
-# ---------------------------------------------------------------------------
 
 def run_one(
     task: dict,
@@ -55,9 +42,19 @@ def run_one(
     n_rounds: int,
     model: str,
     seed: int,
+    drop_rate: float = 0.0,
 ) -> dict:
-    """Run one task under one topology. Returns result dict."""
+    """Run one task under one topology with optional edge-deletion robustness test."""
     G = get_topology(topology_name, DEFAULT_N_AGENTS, seed=seed)
+
+    if drop_rate > 0.0 and G.number_of_edges() > 0:
+        rng = random.Random(seed + task["task_id"])
+        edges = list(G.edges())
+        num_to_drop = int(len(edges) * drop_rate)
+        if num_to_drop > 0:
+            to_drop = rng.sample(edges, num_to_drop)
+            G = G.copy()
+            G.remove_edges_from(to_drop)
 
     sim = MultiAgentSimulator(
         task=task,
@@ -67,17 +64,10 @@ def run_one(
         model=model,
         seed=seed,
     )
+    return sim.run()
 
-    result = sim.run()
-    return result
-
-
-# ---------------------------------------------------------------------------
-# Save helpers
-# ---------------------------------------------------------------------------
 
 def save_log(result: dict, log_dir: Path) -> None:
-    """Save full communication log for one run."""
     log_dir.mkdir(parents=True, exist_ok=True)
     fname = log_dir / f"task{result['task_id']:02d}_{result['topology']}.json"
     with open(fname, "w") as f:
@@ -85,7 +75,6 @@ def save_log(result: dict, log_dir: Path) -> None:
 
 
 def save_metrics(rows: list[dict], path: Path) -> None:
-    """Save/append metrics CSV."""
     df = pd.DataFrame(rows)
     if path.exists():
         existing = pd.read_csv(path)
@@ -95,10 +84,6 @@ def save_metrics(rows: list[dict], path: Path) -> None:
     df.to_csv(path, index=False)
 
 
-# ---------------------------------------------------------------------------
-# Main experiment loop
-# ---------------------------------------------------------------------------
-
 def run_experiments(
     topologies: list[str],
     task_ids: list[int] | None,
@@ -106,27 +91,26 @@ def run_experiments(
     model: str,
     seed: int,
     dry_run: bool,
+    drop_rate: float = 0.0,
 ) -> pd.DataFrame:
 
     tasks = load_tasks()
     if task_ids is not None:
         tasks = [t for t in tasks if t["task_id"] in task_ids]
 
-    # Paths
     results_dir  = Path("results")
     log_dir      = results_dir / "raw_logs"
     metrics_path = results_dir / "metrics.csv"
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    # Print config
     print("=" * 60)
     print("EXPERIMENT CONFIG")
     print(f"  Topologies : {topologies}")
     print(f"  Tasks      : {len(tasks)} instances")
     print(f"  Rounds     : {n_rounds}")
     print(f"  Model      : {model}")
-    print(f"  Agents     : {DEFAULT_N_AGENTS}")
     print(f"  Seed       : {seed}")
+    print(f"  Drop Rate  : {drop_rate:.1%}")
     print(f"  Dry run    : {dry_run}")
     print("=" * 60)
 
@@ -134,19 +118,14 @@ def run_experiments(
         print("\nDry run complete — no API calls made.")
         return pd.DataFrame()
 
-    # Graph stats (saved once)
+    # Compute and save graph statistics once
     stats_rows = []
     for tname in topologies:
         G = get_topology(tname, DEFAULT_N_AGENTS, seed=seed)
         stats_rows.append(compute_graph_stats(G, tname))
     stats_df = pd.DataFrame(stats_rows).set_index("topology")
     stats_df.to_csv(results_dir / "graph_stats.csv")
-    print(f"\nGraph stats saved to results/graph_stats.csv")
-    print(stats_df[["n_edges", "diameter", "avg_shortest_path",
-                     "avg_clustering", "max_betweenness"]].to_string())
-    print()
 
-    # Main loop
     metric_rows = []
     total = len(topologies) * len(tasks)
 
@@ -164,28 +143,27 @@ def run_experiments(
                         n_rounds=n_rounds,
                         model=model,
                         seed=seed,
+                        drop_rate=drop_rate,
                     )
                 except Exception as e:
                     print(f"\n  ERROR: {topology_name} task {task['task_id']}: {e}")
                     result = {
-                        "task_id": task["task_id"],
-                        "topology": topology_name,
-                        "question": task["question"],
+                        "task_id":        task["task_id"],
+                        "topology":       topology_name,
+                        "question":       task["question"],
                         "correct_answer": task["answer"],
-                        "majority_answer": None,
-                        "correct": False,
+                        "majority_answer":None,
+                        "correct":        False,
                         "vote_agreement": 0.0,
-                        "n_rounds": n_rounds,
-                        "log": [],
-                        "vote_counts": {},
-                        "votes": {},
-                        "error": str(e),
+                        "n_rounds":       n_rounds,
+                        "log":            [],
+                        "vote_counts":    {},
+                        "votes":          {},
+                        "error":          str(e),
                     }
 
-                # Save log
                 save_log(result, log_dir)
 
-                # Record metrics
                 row = {
                     "task_id":        result["task_id"],
                     "topology":       result["topology"],
@@ -195,6 +173,7 @@ def run_experiments(
                     "vote_agreement": result.get("vote_agreement", 0.0),
                     "n_rounds":       n_rounds,
                     "model":          model,
+                    "edge_drop_rate": drop_rate,
                     "timestamp":      datetime.now().isoformat(),
                 }
                 metric_rows.append(row)
@@ -202,51 +181,40 @@ def run_experiments(
                     topology_correct += 1
 
                 pbar.update(1)
-                time.sleep(0.2)   # gentle rate limiting
+                # Small sleep to respect API rate limits; adjust per provider
+                time.sleep(0.1)
 
             acc = topology_correct / len(tasks)
-            print(f"\n  {topology_name:12s} accuracy: {acc:.1%}  ({topology_correct}/{len(tasks)})")
+            print(f"\n  {topology_name:15s} accuracy: {acc:.1%}  ({topology_correct}/{len(tasks)})")
 
-    # Save metrics
     save_metrics(metric_rows, metrics_path)
-    print(f"\nMetrics saved to {metrics_path}")
-
     df = pd.DataFrame(metric_rows)
 
-    # Summary table
-    print("\n" + "=" * 60)
-    print("RESULTS SUMMARY")
-    print("=" * 60)
     summary = df.groupby("topology").agg(
         accuracy=("correct", "mean"),
         n_correct=("correct", "sum"),
         n_tasks=("correct", "count"),
         avg_vote_agreement=("vote_agreement", "mean"),
     ).round(3)
+    print("\n" + "=" * 60)
+    print("RESULTS SUMMARY")
+    print("=" * 60)
     print(summary.to_string())
 
     return df
 
 
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--topologies", nargs="+", default=DEFAULT_TOPOLOGIES,
-                        choices=list(TOPOLOGY_BUILDERS.keys()),
-                        help="Which topologies to run")
-    parser.add_argument("--tasks", nargs="+", type=int, default=None,
-                        help="Task IDs to run (default: all)")
-    parser.add_argument("--rounds", type=int, default=DEFAULT_N_ROUNDS,
-                        help="Number of communication rounds")
-    parser.add_argument("--model", type=str, default=DEFAULT_MODEL,
-                        help="Model to use for all agents")
-    parser.add_argument("--seed", type=int, default=DEFAULT_SEED,
-                        help="Random seed")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Print config only, no API calls")
+                        choices=list(TOPOLOGY_BUILDERS.keys()))
+    parser.add_argument("--tasks",      nargs="+", type=int, default=None)
+    parser.add_argument("--rounds",     type=int,  default=DEFAULT_N_ROUNDS)
+    parser.add_argument("--model",      type=str,  default=DEFAULT_MODEL)
+    parser.add_argument("--seed",       type=int,  default=DEFAULT_SEED)
+    parser.add_argument("--drop-rate",  type=float, default=0.0,
+                        help="Fraction of graph edges to randomly drop (robustness test)")
+    parser.add_argument("--dry-run",    action="store_true")
     args = parser.parse_args()
 
     run_experiments(
@@ -256,4 +224,5 @@ if __name__ == "__main__":
         model=args.model,
         seed=args.seed,
         dry_run=args.dry_run,
+        drop_rate=args.drop_rate,
     )
