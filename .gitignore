@@ -11,8 +11,12 @@ __pycache__/
 # jupyter
 .ipynb_checkpoints/
 
-# results (optional - commit these if you want to save your experiment results)
-results/raw_logs/
+# results: generated outputs (figures, metrics, logs) are regenerable; keep task instances
+results/*
+!results/tasks.json
+
+# claude code local state
+.claude/
 
 # os stuff
 .DS_Store
