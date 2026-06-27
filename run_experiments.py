@@ -32,7 +32,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEFAULT_TOPOLOGIES = ["chain", "tree", "random", "small_world", "modular", "scale_free", "fully_connected"]
+# Ordered most-expensive-first (by measured/estimated input tokens per call): the dense
+# topologies dominate cost, so running them first means a mid-run interruption (e.g. API
+# balance exhausted) leaves only the cheap topologies to finish on a small top-up.
+DEFAULT_TOPOLOGIES = ["fully_connected", "scale_free", "random", "modular", "small_world", "tree", "chain"]
 DEFAULT_N_AGENTS   = 20
 DEFAULT_N_ROUNDS   = 3
 DEFAULT_MODEL      = "gemini/gemini-2.5-flash-lite"
@@ -51,6 +54,26 @@ def save_result_incrementally(result: dict, path: Path):
     """Appends a single result row to the CSV (header written only when the file is new)."""
     df = pd.DataFrame([{k: result[k] for k in METRIC_COLUMNS}])
     df.to_csv(path, mode="a", header=not path.exists(), index=False)
+
+
+def _run_key(task_id, topology, seed, drop_rate) -> tuple:
+    """Identity of one (task, topology, seed, drop_rate) run, normalized for set lookup."""
+    return (int(task_id), str(topology), int(seed), float(drop_rate))
+
+
+def load_completed_keys(metrics_path: Path) -> set:
+    """Read already-finished runs from metrics.csv so a restarted sweep resumes instead of
+    re-running (and duplicate-appending) completed work."""
+    if not metrics_path.exists():
+        return set()
+    df = pd.read_csv(metrics_path)
+    needed = {"task_id", "topology", "seed", "edge_drop_rate"}
+    if not needed.issubset(df.columns):
+        return set()
+    return {
+        _run_key(r.task_id, r.topology, r.seed, r.edge_drop_rate)
+        for r in df.itertuples(index=False)
+    }
 
 
 def save_log(log: list, result: dict, log_dir: Path):
@@ -117,30 +140,60 @@ def run_experiments(args):
     metrics_path = results_dir / "metrics.csv"
     log_dir = results_dir / "raw_logs"
 
+    completed = set() if args.no_resume else load_completed_keys(metrics_path)
+
     print(f"Starting experiments. Results -> {metrics_path}, logs -> {log_dir}")
     print(f"Topologies: {args.topologies}")
     print(f"Seeds: {args.seeds} | Drop rates: {args.drop_rates} | "
           f"voting: {'final-only' if args.final_vote_only else 'per-round'}")
+    if completed:
+        print(f"Resuming: {len(completed)} runs already in {metrics_path} will be skipped.")
 
+    skipped = 0
+    failed = 0
     for seed in args.seeds:
         for drop_rate in args.drop_rates:
             for topology in args.topologies:
-                print(f"--- Topology: {topology} | seed={seed} | drop_rate={drop_rate} ---")
-                for task in tqdm(tasks):
-                    result = run_one(
-                        task=task,
-                        topology_name=topology,
-                        n_agents=args.n_agents,
-                        n_rounds=args.rounds,
-                        model=args.model,
-                        seed=seed,
-                        drop_rate=drop_rate,
-                        final_vote_only=args.final_vote_only,
-                        log_dir=log_dir,
-                    )
+                pending = [t for t in tasks
+                           if _run_key(t["task_id"], topology, seed, drop_rate) not in completed]
+                if not pending:
+                    print(f"--- Topology: {topology} | seed={seed} | drop_rate={drop_rate} "
+                          f"(all {len(tasks)} tasks already done, skipping) ---")
+                    skipped += len(tasks)
+                    continue
+                print(f"--- Topology: {topology} | seed={seed} | drop_rate={drop_rate} "
+                      f"({len(pending)}/{len(tasks)} remaining) ---")
+                skipped += len(tasks) - len(pending)
+                for task in tqdm(pending):
+                    try:
+                        result = run_one(
+                            task=task,
+                            topology_name=topology,
+                            n_agents=args.n_agents,
+                            n_rounds=args.rounds,
+                            model=args.model,
+                            seed=seed,
+                            drop_rate=drop_rate,
+                            final_vote_only=args.final_vote_only,
+                            log_dir=log_dir,
+                        )
+                    except Exception as e:
+                        # A single run that exhausts its per-call retries (e.g. a long Gemini
+                        # 503 outage) must NOT kill the whole sweep. Log it and move on; we
+                        # deliberately do NOT write a metrics row, so this (task, topology,
+                        # seed, drop_rate) stays "incomplete" and a later resume re-runs it
+                        # instead of permanently baking a transient failure into the dataset.
+                        print(f"\n  ERROR: {topology} task {task['task_id']} "
+                              f"(seed={seed}, drop={drop_rate}) failed, will retry on resume: {e}")
+                        failed += 1
+                        continue
                     save_result_incrementally(result, metrics_path)
+                    completed.add(_run_key(task["task_id"], topology, seed, drop_rate))
 
-    print("\nExperiments complete.")
+    msg = f"\nExperiments complete. ({skipped} run(s) skipped as already done"
+    if failed:
+        msg += f"; {failed} run(s) failed and will be retried on the next resume"
+    print(msg + ".)")
 
 
 if __name__ == "__main__":
@@ -157,6 +210,8 @@ if __name__ == "__main__":
                         help="One or more edge-deletion fractions (e.g. 0.0 0.1 0.2 0.3).")
     parser.add_argument("--final-vote-only", dest="final_vote_only", action="store_true",
                         help="Vote only after the last round (saves ~N*(R-1) calls; disables per-round curve).")
+    parser.add_argument("--no-resume", dest="no_resume", action="store_true",
+                        help="Ignore existing metrics.csv and re-run everything (default: skip completed runs).")
     args = parser.parse_args()
 
     run_experiments(args)
