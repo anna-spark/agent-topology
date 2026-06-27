@@ -12,7 +12,9 @@ import itertools
 from collections import defaultdict
 from pathlib import Path
 from constraint import Problem, AllDifferentConstraint
-import anthropic
+import pandas as pd
+
+from prompts import SYSTEM_PROMPT
  
 # ---------------------------------------------------------------------------
 # Artist pool (20 fake artists, fixed ground-truth attributes)
@@ -313,49 +315,81 @@ def print_task(task: dict) -> None:
 # Single-agent LLM baseline (Strict matching implemented)
 # ---------------------------------------------------------------------------
  
-def single_agent_baseline(instances: list[dict], clue_index: int = 0, model: str = "claude-haiku-4-5-20251001") -> dict:
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+def single_agent_baseline(instances: list[dict], clue_index: int = 0,
+                          model: str = "gemini/gemini-2.5-flash-lite") -> dict:
+    """Controlled single-agent baseline.
+
+    Uses the SAME model and the SAME prompts (SYSTEM_PROMPT + VOTE_PROMPT) as the
+    multi-agent experiment, with no messages received — so the only difference vs a
+    multi-agent run is the absence of communication. One agent holds one private clue,
+    so it cannot reliably solve the puzzle (expected ≈ chance, 1/|candidates|). This is
+    the reference the topology runs are compared against.
+    """
+    from agents import _make_client
+    from prompts import VOTE_PROMPT
+
+    client, backend = _make_client(model)
+    api_model = model.replace("gemini/", "") if backend == "gemini" else model
     results = []
- 
+
     for inst in instances:
         agent_id = f"agent_{clue_index:02d}"
         clue = inst["agent_clues"][agent_id]
         question = inst["question"]
         candidates = inst["candidates"]
         answer = inst["answer"]
- 
-        prompt = f"You are trying to solve a music trivia puzzle.\n\nYou have been given ONE clue about a group of 5 artists:\nClue: {clue}\n\nThe artists in this puzzle are: {', '.join(candidates)}\n\nQuestion: {question}\n\nYou must choose exactly one artist from the list above.\nReply with ONLY the artist's name, nothing else."
- 
-        response = client.messages.create(
-            model=model,
-            max_tokens=50,
-            messages=[{"role": "user", "content": prompt}],
+
+        prompt = VOTE_PROMPT.format(
+            clue=clue,
+            received="(No messages received — you are solving alone.)",
+            candidates=", ".join(candidates),
+            question=question,
         )
- 
-        raw = response.content[0].text.strip()
+
+        if backend == "gemini":
+            from google.genai import types
+            response = client.models.generate_content(
+                model=api_model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=SYSTEM_PROMPT, max_output_tokens=30, temperature=0.1,
+                ),
+            )
+            raw = (response.text or "").strip()
+        else:
+            response = client.messages.create(
+                model=api_model, max_tokens=30, system=SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            raw = response.content[0].text.strip()
+
         clean_raw = raw.strip().strip('"').strip("'").lower()
         guess = raw
-        
         for c in candidates:
             if c.lower() == clean_raw:
                 guess = c
                 break
- 
+
         correct = guess == answer
         results.append({
             "task_id": inst["task_id"],
             "question": question,
-            "answer": answer,
+            "correct_answer": answer,
             "guess": guess,
             "correct": correct,
             "clue_seen": clue,
         })
- 
+
         status = "✓" if correct else "✗"
         print(f"  Task {inst['task_id']:2d} {status}  guess={guess!r}  answer={answer!r}")
- 
+
     accuracy = sum(r["correct"] for r in results) / len(results)
     print(f"\nSingle-agent baseline accuracy: {accuracy:.1%}  ({sum(r['correct'] for r in results)}/{len(results)} correct)")
+
+    out_path = Path("results/baseline.csv")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(results).to_csv(out_path, index=False)
+    print(f"Saved baseline results to {out_path}")
     return {"accuracy": accuracy, "results": results}
  
 if __name__ == "__main__":

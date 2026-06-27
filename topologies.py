@@ -21,9 +21,8 @@ import networkx as nx
 import random
 
 
-def get_agent_ids(n: int) -> list[str]:
-    return [f"agent_{i:02d}" for i in range(n)]
-
+def get_agent_ids(n: int) -> list[int]:
+    return list(range(n))
 
 # ---------------------------------------------------------------------------
 # Chain

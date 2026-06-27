@@ -17,6 +17,8 @@ import networkx as nx
 
 from topologies import get_topology, compute_graph_stats, TOPOLOGY_BUILDERS
 
+N_AGENTS = 20  # must match run_experiments.DEFAULT_N_AGENTS
+
 TOPOLOGY_COLORS = {
     "chain":           "#4C72B0",
     "tree":            "#DD8452",
@@ -39,10 +41,31 @@ FIGURES_DIR = Path("results/figures")
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def regenerate_graph_stats(n: int = N_AGENTS) -> pd.DataFrame:
+    """Recompute graph statistics straight from topologies.py so they always match
+    the graph code, and persist to results/graph_stats.csv."""
+    rows = [compute_graph_stats(get_topology(name, n), name) for name in TOPOLOGY_BUILDERS]
+    stats = pd.DataFrame(rows)
+    stats.to_csv("results/graph_stats.csv", index=False)
+    return stats
+
+
 def load_results() -> tuple[pd.DataFrame, pd.DataFrame]:
     metrics = pd.read_csv("results/metrics.csv")
-    stats   = pd.read_csv("results/graph_stats.csv")
+    # Backfill edge_drop_rate for older rows that predate the column.
+    if "edge_drop_rate" not in metrics.columns:
+        metrics["edge_drop_rate"] = 0.0
+    metrics["edge_drop_rate"] = metrics["edge_drop_rate"].fillna(0.0)
+    stats = regenerate_graph_stats()
     return metrics, stats
+
+
+def load_baseline_accuracy() -> float | None:
+    """Single-agent baseline accuracy, if results/baseline.csv exists."""
+    path = Path("results/baseline.csv")
+    if not path.exists():
+        return None
+    return float(pd.read_csv(path)["correct"].mean())
 
 
 def compute_bootstrap_ci(data: np.ndarray, n_resamples: int = 2000, ci: float = 0.95) -> tuple[float, float]:
@@ -56,7 +79,7 @@ def compute_bootstrap_ci(data: np.ndarray, n_resamples: int = 2000, ci: float = 
     return float(np.percentile(boot_means, lower_pct)), float(np.percentile(boot_means, upper_pct))
 
 
-def plot_accuracy_bar(metrics: pd.DataFrame) -> None:
+def plot_accuracy_bar(metrics: pd.DataFrame, baseline: float | None = None) -> None:
     summary_rows = []
     for topo, group in metrics.groupby("topology"):
         acc = group["correct"].mean()
@@ -92,6 +115,11 @@ def plot_accuracy_bar(metrics: pd.DataFrame) -> None:
             f"{acc:.0%}",
             ha="center", va="bottom", fontsize=10, fontweight="bold",
         )
+
+    if baseline is not None:
+        ax.axhline(baseline, color="#444", linestyle="--", linewidth=1.5,
+                   label=f"Single-agent baseline ({baseline:.0%})")
+        ax.legend(loc="upper right", fontsize=9)
 
     ax.set_ylim(0, 1.15)
     ax.set_ylabel("Accuracy")
@@ -235,18 +263,87 @@ def plot_vote_agreement_heatmap(metrics: pd.DataFrame) -> None:
     print(f"  Saved: {path}")
 
 
+def plot_budget_summary(metrics: pd.DataFrame) -> pd.DataFrame:
+    """Token/message budget by topology (Step 3 deliverable + budget-control evidence)."""
+    budget_cols = ["total_tokens", "total_input_tokens", "total_output_tokens", "n_messages", "n_llm_calls"]
+    available = [c for c in budget_cols if c in metrics.columns]
+    if not available:
+        print("  (no budget columns found — skipping budget summary)")
+        return pd.DataFrame()
+
+    summary = metrics.groupby("topology")[available].mean().round(1).reset_index()
+    summary = summary.sort_values("total_tokens" if "total_tokens" in available else available[0],
+                                  ascending=False)
+    summary.to_csv("results/budget_summary.csv", index=False)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
+    colors = [TOPOLOGY_COLORS.get(t, "#888") for t in summary["topology"]]
+
+    if "total_tokens" in summary:
+        ax1.bar(summary["topology"], summary["total_tokens"], color=colors, width=0.6)
+        ax1.set_ylabel("Avg total tokens per run")
+        ax1.set_title("Token Budget by Topology")
+        ax1.tick_params(axis="x", rotation=20)
+
+    msg_col = "n_llm_calls" if "n_llm_calls" in summary else ("n_messages" if "n_messages" in summary else None)
+    if msg_col:
+        ax2.bar(summary["topology"], summary[msg_col], color=colors, width=0.6)
+        ax2.set_ylabel(f"Avg {msg_col} per run")
+        ax2.set_title("Compute Budget by Topology (should be ~constant)")
+        ax2.tick_params(axis="x", rotation=20)
+
+    plt.tight_layout()
+    path = FIGURES_DIR / "fig6_budget.png"
+    plt.savefig(path, bbox_inches="tight")
+    plt.close()
+    print(f"  Saved: {path}")
+    print("\nBudget Summary Table:")
+    print(summary.to_string(index=False))
+    return summary
+
+
+def plot_robustness(metrics: pd.DataFrame) -> None:
+    """Accuracy vs edge-deletion rate per topology (only if drop>0 runs exist)."""
+    if metrics["edge_drop_rate"].max() <= 0:
+        print("  (no edge-deletion runs found — skipping robustness plot)")
+        return
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for topo, group in metrics.groupby("topology"):
+        curve = group.groupby("edge_drop_rate")["correct"].mean().sort_index()
+        ax.plot(curve.index, curve.values, marker="o",
+                color=TOPOLOGY_COLORS.get(topo, "#888"), label=topo.replace("_", " "))
+
+    ax.set_xlabel("Edge-deletion rate")
+    ax.set_ylabel("Accuracy")
+    ax.set_title("Robustness to Edge Deletion by Topology", pad=12)
+    ax.set_ylim(-0.05, 1.05)
+    ax.legend(fontsize=8, ncol=2)
+
+    plt.tight_layout()
+    path = FIGURES_DIR / "fig7_robustness.png"
+    plt.savefig(path, bbox_inches="tight")
+    plt.close()
+    print(f"  Saved: {path}")
+
+
 def make_summary_table(metrics: pd.DataFrame, stats: pd.DataFrame) -> pd.DataFrame:
     perf_rows = []
     for topo, group in metrics.groupby("topology"):
         acc = group["correct"].mean()
         low_ci, high_ci = compute_bootstrap_ci(group["correct"].values)
-        perf_rows.append({
+        row = {
             "topology":          topo,
             "accuracy":          round(acc, 3),
             "95% CI Lower":      round(low_ci, 3),
             "95% CI Upper":      round(high_ci, 3),
             "avg_vote_agreement":round(group["vote_agreement"].mean(), 3),
-        })
+        }
+        if "total_tokens" in group:
+            row["avg_total_tokens"] = round(group["total_tokens"].mean(), 1)
+        if "n_messages" in group:
+            row["avg_n_messages"] = round(group["n_messages"].mean(), 1)
+        perf_rows.append(row)
     perf   = pd.DataFrame(perf_rows)
     merged = perf.merge(
         stats[["topology", "diameter", "avg_shortest_path", "max_betweenness", "edge_density"]],
@@ -270,14 +367,21 @@ def make_failure_table(metrics: pd.DataFrame) -> pd.DataFrame:
 
 def run_analysis(skip_graphs: bool = False) -> None:
     metrics, stats = load_results()
-    plot_accuracy_bar(metrics)
-    plot_path_vs_accuracy(metrics, stats)
-    plot_accuracy_boxplot(metrics)
+    baseline = load_baseline_accuracy()
+
+    # Main accuracy/structure figures use only the intact-graph runs (drop_rate == 0).
+    main = metrics[metrics["edge_drop_rate"] == 0].copy()
+
+    plot_accuracy_bar(main, baseline=baseline)
+    plot_path_vs_accuracy(main, stats)
+    plot_accuracy_boxplot(main)
     if not skip_graphs:
         plot_graph_visualizations()
-    plot_vote_agreement_heatmap(metrics)
-    make_summary_table(metrics, stats)
-    make_failure_table(metrics)
+    plot_vote_agreement_heatmap(main)
+    make_summary_table(main, stats)
+    make_failure_table(main)
+    plot_budget_summary(main)
+    plot_robustness(metrics)  # uses all runs, including edge-deletion
     print("\nAnalysis complete!")
 
 
