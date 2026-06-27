@@ -4,6 +4,7 @@ analysis.py
 Loads experiment results and produces figures + tables with statistical uncertainty.
 """
 
+import ast
 import json
 import argparse
 from pathlib import Path
@@ -27,6 +28,7 @@ TOPOLOGY_COLORS = {
     "modular":         "#8172B3",
     "scale_free":      "#CCB974",
     "fully_connected": "#64B5CD",
+    "empty":           "#999999",
 }
 
 plt.rcParams.update({
@@ -327,6 +329,47 @@ def plot_robustness(metrics: pd.DataFrame) -> None:
     print(f"  Saved: {path}")
 
 
+def plot_accuracy_by_round(metrics: pd.DataFrame) -> None:
+    """Accuracy after each communication round, per topology (information-propagation speed)."""
+    rows = []
+    for _, row in metrics.iterrows():
+        rr = row.get("round_results")
+        if isinstance(rr, str):
+            try:
+                rr = ast.literal_eval(rr)
+            except (ValueError, SyntaxError):
+                continue
+        if not isinstance(rr, list):
+            continue
+        for entry in rr:
+            rows.append({"topology": row["topology"], "round": entry["round"],
+                         "correct": bool(entry["correct"])})
+
+    if not rows:
+        print("  (no round_results found — skipping accuracy-by-round)")
+        return
+
+    df = pd.DataFrame(rows)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for topo, g in df.groupby("topology"):
+        curve = g.groupby("round")["correct"].mean().sort_index()
+        ax.plot(curve.index, curve.values, marker="o",
+                color=TOPOLOGY_COLORS.get(topo, "#888"), label=topo.replace("_", " "))
+
+    ax.set_xlabel("Communication round")
+    ax.set_ylabel("Accuracy")
+    ax.set_title("Accuracy vs. Communication Round by Topology", pad=12)
+    ax.set_ylim(-0.05, 1.05)
+    ax.set_xticks(sorted(df["round"].unique()))
+    ax.legend(fontsize=8, ncol=2)
+
+    plt.tight_layout()
+    path = FIGURES_DIR / "fig8_rounds.png"
+    plt.savefig(path, bbox_inches="tight")
+    plt.close()
+    print(f"  Saved: {path}")
+
+
 def make_summary_table(metrics: pd.DataFrame, stats: pd.DataFrame) -> pd.DataFrame:
     perf_rows = []
     for topo, group in metrics.groupby("topology"):
@@ -337,8 +380,11 @@ def make_summary_table(metrics: pd.DataFrame, stats: pd.DataFrame) -> pd.DataFra
             "accuracy":          round(acc, 3),
             "95% CI Lower":      round(low_ci, 3),
             "95% CI Upper":      round(high_ci, 3),
+            "n_runs":            int(len(group)),
             "avg_vote_agreement":round(group["vote_agreement"].mean(), 3),
         }
+        if "seed" in group:
+            row["n_seeds"] = int(group["seed"].nunique())
         if "total_tokens" in group:
             row["avg_total_tokens"] = round(group["total_tokens"].mean(), 1)
         if "n_messages" in group:
@@ -381,6 +427,7 @@ def run_analysis(skip_graphs: bool = False) -> None:
     make_summary_table(main, stats)
     make_failure_table(main)
     plot_budget_summary(main)
+    plot_accuracy_by_round(main)
     plot_robustness(metrics)  # uses all runs, including edge-deletion
     print("\nAnalysis complete!")
 

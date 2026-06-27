@@ -178,6 +178,22 @@ def make_fully_connected(n: int) -> nx.Graph:
 
 
 # ---------------------------------------------------------------------------
+# Empty (no communication — lower-bound baseline)
+# ---------------------------------------------------------------------------
+
+def make_empty(n: int) -> nx.Graph:
+    """
+    No edges: n isolated agents. With identical compute budget but zero
+    communication, this isolates the value of the topology itself — the
+    lower bookend against fully_connected. Each agent votes on its own clue only.
+    """
+    ids = get_agent_ids(n)
+    G = nx.Graph()
+    G.add_nodes_from(ids)
+    return G
+
+
+# ---------------------------------------------------------------------------
 # Registry — easy lookup by name
 # ---------------------------------------------------------------------------
 
@@ -189,6 +205,7 @@ TOPOLOGY_BUILDERS = {
     "modular":         make_modular,
     "scale_free":      make_scale_free,
     "fully_connected": make_fully_connected,
+    "empty":           make_empty,
 }
 
 
@@ -219,11 +236,16 @@ def compute_graph_stats(G: nx.Graph, name: str) -> dict:
         stats["diameter"] = nx.diameter(G)
         stats["avg_shortest_path"] = nx.average_shortest_path_length(G)
     else:
-        # Use largest component
+        # Use largest component; guard the degenerate single-node case (e.g. empty graph),
+        # where average_shortest_path_length raises.
         largest = max(nx.connected_components(G), key=len)
         H = G.subgraph(largest)
-        stats["diameter"] = nx.diameter(H)
-        stats["avg_shortest_path"] = nx.average_shortest_path_length(H)
+        if H.number_of_nodes() < 2:
+            stats["diameter"] = 0
+            stats["avg_shortest_path"] = 0.0
+        else:
+            stats["diameter"] = nx.diameter(H)
+            stats["avg_shortest_path"] = nx.average_shortest_path_length(H)
 
     stats["avg_clustering"] = nx.average_clustering(G)
 

@@ -16,8 +16,10 @@ Examples:
 """
 
 import json
+import time
 import argparse
 import random
+from datetime import datetime
 import networkx as nx
 import pandas as pd
 from pathlib import Path
@@ -39,8 +41,9 @@ DEFAULT_SEED       = 42
 # Columns persisted to metrics.csv (the heavy per-message `log` is saved separately).
 METRIC_COLUMNS = [
     "task_id", "topology", "question", "correct_answer", "majority_answer", "correct",
-    "votes", "vote_counts", "vote_agreement", "n_rounds", "model", "seed", "edge_drop_rate",
-    "total_input_tokens", "total_output_tokens", "total_tokens", "n_messages", "n_llm_calls",
+    "votes", "vote_counts", "vote_agreement", "round_results", "n_rounds", "model", "seed",
+    "edge_drop_rate", "total_input_tokens", "total_output_tokens", "total_tokens",
+    "n_messages", "n_llm_calls", "timestamp", "duration_sec",
 ]
 
 
@@ -55,7 +58,7 @@ def save_log(log: list, result: dict, log_dir: Path):
     log_dir.mkdir(parents=True, exist_ok=True)
     drop = result["edge_drop_rate"]
     suffix = f"_drop{drop}" if drop and drop > 0 else ""
-    fname = log_dir / f"task{result['task_id']:02d}_{result['topology']}{suffix}.json"
+    fname = log_dir / f"task{result['task_id']:02d}_{result['topology']}_seed{result['seed']}{suffix}.json"
     with open(fname, "w") as f:
         json.dump({"metrics": result, "log": log}, f, indent=2, default=str)
 
@@ -68,6 +71,7 @@ def run_one(
     model: str,
     seed: int,
     drop_rate: float = 0.0,
+    final_vote_only: bool = False,
     log_dir: Path | None = None,
 ) -> dict:
     """Run one task under one topology (with optional edge-deletion robustness test)."""
@@ -91,8 +95,12 @@ def run_one(
         topology_name=topology_name,
         seed=seed,
         edge_drop_rate=drop_rate,
+        final_vote_only=final_vote_only,
     )
+    t0 = time.time()
     result = simulator.run()
+    result["duration_sec"] = round(time.time() - t0, 2)
+    result["timestamp"] = datetime.now().isoformat(timespec="seconds")
     if log_dir is not None:
         save_log(simulator.log, result, log_dir)
     return result
@@ -111,23 +119,26 @@ def run_experiments(args):
 
     print(f"Starting experiments. Results -> {metrics_path}, logs -> {log_dir}")
     print(f"Topologies: {args.topologies}")
-    print(f"Drop rates: {args.drop_rates}")
+    print(f"Seeds: {args.seeds} | Drop rates: {args.drop_rates} | "
+          f"voting: {'final-only' if args.final_vote_only else 'per-round'}")
 
-    for drop_rate in args.drop_rates:
-        for topology in args.topologies:
-            print(f"--- Topology: {topology} | drop_rate={drop_rate} ---")
-            for task in tqdm(tasks):
-                result = run_one(
-                    task=task,
-                    topology_name=topology,
-                    n_agents=args.n_agents,
-                    n_rounds=args.rounds,
-                    model=args.model,
-                    seed=args.seed,
-                    drop_rate=drop_rate,
-                    log_dir=log_dir,
-                )
-                save_result_incrementally(result, metrics_path)
+    for seed in args.seeds:
+        for drop_rate in args.drop_rates:
+            for topology in args.topologies:
+                print(f"--- Topology: {topology} | seed={seed} | drop_rate={drop_rate} ---")
+                for task in tqdm(tasks):
+                    result = run_one(
+                        task=task,
+                        topology_name=topology,
+                        n_agents=args.n_agents,
+                        n_rounds=args.rounds,
+                        model=args.model,
+                        seed=seed,
+                        drop_rate=drop_rate,
+                        final_vote_only=args.final_vote_only,
+                        log_dir=log_dir,
+                    )
+                    save_result_incrementally(result, metrics_path)
 
     print("\nExperiments complete.")
 
@@ -140,9 +151,12 @@ if __name__ == "__main__":
     parser.add_argument("--n-agents",    dest="n_agents", type=int, default=DEFAULT_N_AGENTS)
     parser.add_argument("--rounds",      type=int,   default=DEFAULT_N_ROUNDS)
     parser.add_argument("--model",       type=str,   default=DEFAULT_MODEL)
-    parser.add_argument("--seed",        type=int,   default=DEFAULT_SEED)
+    parser.add_argument("--seeds",       nargs="+",  type=int, default=[DEFAULT_SEED],
+                        help="One or more seeds; each replicates the full sweep (varies graph instance + LLM).")
     parser.add_argument("--drop-rates",  dest="drop_rates", nargs="+", type=float, default=[0.0],
                         help="One or more edge-deletion fractions (e.g. 0.0 0.1 0.2 0.3).")
+    parser.add_argument("--final-vote-only", dest="final_vote_only", action="store_true",
+                        help="Vote only after the last round (saves ~N*(R-1) calls; disables per-round curve).")
     args = parser.parse_args()
 
     run_experiments(args)

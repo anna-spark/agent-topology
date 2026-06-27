@@ -26,7 +26,14 @@ topologies by construction; only context size varies).
 
 `chain`, `tree` (balanced binary), `random` (Erdős–Rényi, connected), `small_world`
 (Watts–Strogatz), `modular` (community cliques + bridges), `scale_free`
-(Barabási–Albert), `fully_connected` (upper-bound baseline).
+(Barabási–Albert), `fully_connected` (upper-bound baseline), `empty` (no edges —
+the no-communication lower bookend at identical compute budget).
+
+**Replication & rounds.** Each condition can be run across multiple `--seeds`; the seed
+varies both the drawn graph instance (for random/small-world/modular/scale-free) and LLM
+stochasticity, so confidence intervals reflect real variance, not a single graph sample.
+Agents vote after *every* round (not just the last), yielding an accuracy-vs-round curve;
+pass `--final-vote-only` to vote once at the end and save calls.
 
 ## Module layout
 
@@ -56,27 +63,29 @@ python -m venv venv
 # 2. Single-agent baseline (same model + prompts, no communication) -> results/baseline.csv
 ./venv/bin/python tasks.py --baseline
 
-# 3. Main topology sweep -> results/metrics.csv (+ results/raw_logs/*.json)
-./venv/bin/python run_experiments.py
+# 3. Main topology sweep across 3 seeds -> results/metrics.csv (+ results/raw_logs/*.json)
+./venv/bin/python run_experiments.py --seeds 42 123 2024
 
-# 4. Robustness sweep (edge deletion); appends rows tagged with edge_drop_rate
-./venv/bin/python run_experiments.py --drop-rates 0.1 0.2 0.3
+# 4. Robustness sweep (edge deletion) — kept separate/smaller to bound cost; appends rows
+./venv/bin/python run_experiments.py --topologies chain tree random fully_connected \
+    --seeds 42 --drop-rates 0.1 0.2 0.3
 
 # 5. Figures + tables -> results/figures/, results/topology_summary.csv, budget_summary.csv, failure_analysis.csv
 ./venv/bin/python analysis.py
 ```
 
-Useful flags: `run_experiments.py --topologies chain tree --tasks 0 1 --rounds 1`
-(quick smoke test), `--n-agents`, `--seed`, `--model`.
+Useful flags: `run_experiments.py --topologies chain empty --tasks 0 1 --seeds 42 --rounds 2`
+(quick smoke test), `--n-agents`, `--final-vote-only`, `--model`.
 
 ## Outputs (`results/`)
 
-- `metrics.csv` — one row per (task × topology × drop-rate): correctness, vote
-  agreement, and budget columns. Heavy message logs are **not** here.
+- `metrics.csv` — one row per (task × topology × seed × drop-rate): correctness, vote
+  agreement, per-round results (`round_results`), budget columns, `timestamp`, and
+  `duration_sec`. Heavy message logs are **not** here.
 - `raw_logs/*.json` — full per-message communication trace for every run.
 - `figures/` — accuracy bar (with bootstrap CIs + baseline line), path-length vs
   accuracy, per-task boxplot, graph visualizations colored by betweenness, vote-agreement
-  heatmap, budget bars, robustness curves.
+  heatmap, budget bars, accuracy-vs-round curves, robustness curves.
 - `topology_summary.csv`, `budget_summary.csv`, `graph_stats.csv`, `failure_analysis.csv`.
 - `archive/` — superseded result files from earlier (broken) runs, kept for reference.
 

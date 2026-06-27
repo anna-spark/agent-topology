@@ -119,7 +119,8 @@ class Agent:
 
 class MultiAgentSimulator:
     def __init__(self, task: dict, adj_matrix: list[list[int]], model: str, n_rounds: int,
-                 topology_name: str = "unknown", seed: int = 42, edge_drop_rate: float = 0.0):
+                 topology_name: str = "unknown", seed: int = 42, edge_drop_rate: float = 0.0,
+                 final_vote_only: bool = False):
         self.task = task
         self.adj_matrix = adj_matrix
         self.n_rounds = n_rounds
@@ -127,6 +128,7 @@ class MultiAgentSimulator:
         self.topology_name = topology_name
         self.seed = seed
         self.edge_drop_rate = edge_drop_rate
+        self.final_vote_only = final_vote_only
         self.rng = random.Random(seed)
         self.log = []
         client, backend = _make_client(model)
@@ -136,9 +138,23 @@ class MultiAgentSimulator:
             clue_key = f"agent_{idx:02d}"
             self.agents[idx] = Agent(agent_id=idx, clue=task["agent_clues"][clue_key], candidates=task["candidates"], question=task["question"], client=client, backend=backend, model=model)
 
+    def _tally(self, votes: dict) -> tuple[str, dict, float]:
+        """Majority answer (seeded tie-break), vote counts, and agreement fraction."""
+        vote_counts = Counter(votes.values())
+        top_count = vote_counts.most_common(1)[0][1]
+        tied = [ans for ans, cnt in vote_counts.items() if cnt == top_count]
+        majority_answer = self.rng.choice(sorted(tied)) if len(tied) > 1 else tied[0]
+        return majority_answer, dict(vote_counts), top_count / len(votes)
+
     def run(self) -> dict:
         agent_ids = sorted(list(self.agents.keys()))
         num_agents = len(agent_ids)
+
+        round_results = []        # accuracy/agreement after each voting round
+        votes = {}                # most recent round's votes (final = last round)
+        majority_answer = None
+        vote_counts = {}
+        vote_agreement = 0.0
 
         for r in range(1, self.n_rounds + 1):
             round_messages = {}
@@ -153,16 +169,22 @@ class MultiAgentSimulator:
                         self.agents[aid].receive_message(round_idx=r, sender_id=neighbor_id, msg=round_messages[neighbor_id])
                         self.log.append({"round": r, "event": "receive", "to": aid, "from": neighbor_id})
 
-        votes = {}
-        for aid in agent_ids:
-            vote = self.agents[aid].cast_vote()
-            votes[aid] = vote
-            self.log.append({"round": "final", "event": "vote", "agent": aid, "vote": vote})
+            # Vote after every round (information-propagation curve), or only on the last
+            # round when --final-vote-only is set.
+            if (not self.final_vote_only) or (r == self.n_rounds):
+                votes = {}
+                for aid in agent_ids:
+                    vote = self.agents[aid].cast_vote()
+                    votes[aid] = vote
+                    self.log.append({"round": r, "event": "vote", "agent": aid, "vote": vote})
 
-        vote_counts = Counter(votes.values())
-        top_count = vote_counts.most_common(1)[0][1]
-        tied = [ans for ans, cnt in vote_counts.items() if cnt == top_count]
-        majority_answer = self.rng.choice(sorted(tied)) if len(tied) > 1 else tied[0]
+                majority_answer, vote_counts, vote_agreement = self._tally(votes)
+                round_results.append({
+                    "round": r,
+                    "majority": majority_answer,
+                    "correct": majority_answer == self.task["answer"],
+                    "agreement": vote_agreement,
+                })
 
         # Aggregate per-run budget across all agents (Step 3 deliverable).
         total_input = sum(a.input_tokens for a in self.agents.values())
@@ -175,7 +197,8 @@ class MultiAgentSimulator:
         return {
             "task_id": self.task["task_id"], "topology": self.topology_name, "question": self.task["question"],
             "correct_answer": self.task["answer"], "majority_answer": majority_answer, "correct": majority_answer == self.task["answer"],
-            "votes": votes, "vote_counts": dict(vote_counts), "vote_agreement": top_count / len(agent_ids),
+            "votes": votes, "vote_counts": vote_counts, "vote_agreement": vote_agreement,
+            "round_results": round_results,
             "n_rounds": self.n_rounds, "model": self.model, "seed": self.seed, "edge_drop_rate": self.edge_drop_rate,
             "total_input_tokens": total_input, "total_output_tokens": total_output,
             "total_tokens": total_input + total_output, "n_messages": n_messages, "n_llm_calls": n_llm_calls,
