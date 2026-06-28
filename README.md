@@ -46,6 +46,26 @@ pass `--final-vote-only` to vote once at the end and save calls.
 | `run_experiments.py` | Runs the topology sweep; appends to `results/metrics.csv`; saves per-run traces to `results/raw_logs/`. |
 | `analysis.py` | Graph metrics, figures, and summary tables. |
 
+## Two task families
+
+The same harness runs two distinct experiments, selected with `--task-type`:
+
+- **`logic_grid`** (default) — the distributed clue puzzle described above. Outcome is
+  binary exact-match `correct`. Uses `results/tasks.json` → `results/metrics.csv` →
+  `results/figures/`.
+- **`fragment`** — distributed secret-code reconstruction (a pure information-flow task).
+  Each agent holds one `(position, letter)` fragment; the code can only be assembled by
+  relaying fragments across the graph. Outcome is a *continuous* `collective_recovery`
+  score (fraction of positions correctly reconstructed by the per-position majority),
+  which is far more sensitive than exact match. Uses `results/tasks_fragment.json` →
+  `results/metrics_fragment.csv` → `results/figures_fragment/`.
+
+Every step (`tasks.py`, `run_experiments.py`, `analysis.py`) takes `--task-type` and
+keeps the two experiments in completely separate files, so they never clobber each other.
+`analysis.py` also **auto-detects** the family from the metrics columns, so a bare
+`./venv/bin/python analysis.py` analyses the logic-grid run and
+`--task-type fragment` (or pointing `--metrics` at the fragment CSV) switches to recovery.
+
 ## Setup
 
 ```bash
@@ -74,8 +94,30 @@ python -m venv venv
 ./venv/bin/python analysis.py
 ```
 
+### Fragment experiment (distributed secret-code reconstruction)
+
+```bash
+# 1. Generate fragment instances (writes results/tasks_fragment.json)
+./venv/bin/python tasks.py --task-type fragment --n 25
+
+# 2. Reference baselines (same model + prompts, no network):
+#    ceiling = one agent handed every fragment; floor = one agent with a single fragment
+./venv/bin/python tasks.py --task-type fragment --baseline --baseline-mode all  # -> baseline_fragment_all.csv
+./venv/bin/python tasks.py --task-type fragment --baseline --baseline-mode one  # -> baseline_fragment_one.csv
+
+# 3. Topology sweep -> results/metrics_fragment.csv (+ results/raw_logs_fragment/*.json)
+./venv/bin/python run_experiments.py --task-type fragment --seeds 42
+
+# 4. Figures + tables -> results/figures_fragment/, results/topology_summary_fragment.csv, etc.
+#    (recovery metric + floor/ceiling baseline lines; auto-detected from the metrics columns)
+./venv/bin/python analysis.py --task-type fragment
+```
+
 Useful flags: `run_experiments.py --topologies chain empty --tasks 0 1 --seeds 42 --rounds 2`
-(quick smoke test), `--n-agents`, `--final-vote-only`, `--model`.
+(quick smoke test), `--n-agents`, `--final-vote-only`, `--model`. For fragment generation,
+`tasks.py --task-type fragment --code-len N` sets the secret-code length (default = n_agents).
+`analysis.py` flags: `--task-type {logic_grid,fragment}`, `--metrics PATH` (override input),
+`--no-graphs` (skip the slow topology visualizations).
 
 ## Outputs (`results/`)
 
@@ -87,6 +129,14 @@ Useful flags: `run_experiments.py --topologies chain empty --tasks 0 1 --seeds 4
   accuracy, per-task boxplot, graph visualizations colored by betweenness, vote-agreement
   heatmap, budget bars, accuracy-vs-round curves, robustness curves.
 - `topology_summary.csv`, `budget_summary.csv`, `graph_stats.csv`, `failure_analysis.csv`.
+- **Fragment experiment** (mirrors the above with a `_fragment` suffix):
+  `metrics_fragment.csv` (adds `collective_recovery`, `mean_recovery`, `best_recovery`
+  columns), `tasks_fragment.json`, `raw_logs_fragment/*.json`, `baseline_fragment_all.csv`
+  (ceiling) and `baseline_fragment_one.csv` (floor), `figures_fragment/`, and
+  `topology_summary_fragment.csv` / `budget_summary_fragment.csv` /
+  `failure_analysis_fragment.csv`. The summary table reports recovery (with bootstrap CIs)
+  plus `exact_match_acc` as a secondary number; the failure table lists incompletely-
+  reconstructed runs (recovery < 1.0), worst first.
 - `archive/` — superseded result files from earlier (broken) runs, kept for reference.
 
 ## Notes
