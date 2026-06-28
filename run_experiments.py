@@ -48,11 +48,22 @@ METRIC_COLUMNS = [
     "edge_drop_rate", "total_input_tokens", "total_output_tokens", "total_tokens",
     "n_messages", "n_llm_calls", "timestamp", "duration_sec",
 ]
+# Fragment runs add a continuous recovery score (fraction of code positions
+# reconstructed) — a more sensitive signal than exact-match accuracy.
+FRAGMENT_EXTRA_COLUMNS = ["collective_recovery", "mean_recovery", "best_recovery"]
 
 
-def save_result_incrementally(result: dict, path: Path):
+def metric_columns(task_type: str) -> list[str]:
+    if task_type == "fragment":
+        # Insert recovery columns right after `correct` for readability.
+        i = METRIC_COLUMNS.index("correct") + 1
+        return METRIC_COLUMNS[:i] + FRAGMENT_EXTRA_COLUMNS + METRIC_COLUMNS[i:]
+    return METRIC_COLUMNS
+
+
+def save_result_incrementally(result: dict, path: Path, columns: list[str]):
     """Appends a single result row to the CSV (header written only when the file is new)."""
-    df = pd.DataFrame([{k: result[k] for k in METRIC_COLUMNS}])
+    df = pd.DataFrame([{k: result.get(k) for k in columns}])
     df.to_csv(path, mode="a", header=not path.exists(), index=False)
 
 
@@ -96,6 +107,7 @@ def run_one(
     drop_rate: float = 0.0,
     final_vote_only: bool = False,
     log_dir: Path | None = None,
+    task_type: str = "logic_grid",
 ) -> dict:
     """Run one task under one topology (with optional edge-deletion robustness test)."""
     G = get_topology(topology_name, n_agents, seed=seed)
@@ -119,6 +131,7 @@ def run_one(
         seed=seed,
         edge_drop_rate=drop_rate,
         final_vote_only=final_vote_only,
+        task_type=task_type,
     )
     t0 = time.time()
     result = simulator.run()
@@ -130,19 +143,26 @@ def run_one(
 
 
 def run_experiments(args):
-    tasks = load_tasks()
+    # Per-task-type defaults keep the fragment experiment fully separate from the
+    # logic-grid data (different tasks file, metrics file, and log dir).
+    is_fragment = args.task_type == "fragment"
+    tasks_file = args.tasks_file or ("results/tasks_fragment.json" if is_fragment else "results/tasks.json")
+    tasks = load_tasks(tasks_file)
     if args.tasks is not None:
         wanted = set(args.tasks)
         tasks = [t for t in tasks if t["task_id"] in wanted]
 
     results_dir = Path("results")
     results_dir.mkdir(exist_ok=True)
-    metrics_path = results_dir / "metrics.csv"
-    log_dir = results_dir / "raw_logs"
+    metrics_path = Path(args.metrics_file) if args.metrics_file else (
+        results_dir / ("metrics_fragment.csv" if is_fragment else "metrics.csv"))
+    log_dir = results_dir / ("raw_logs_fragment" if is_fragment else "raw_logs")
+    columns = metric_columns(args.task_type)
 
     completed = set() if args.no_resume else load_completed_keys(metrics_path)
 
-    print(f"Starting experiments. Results -> {metrics_path}, logs -> {log_dir}")
+    print(f"Starting experiments (task_type={args.task_type}). Results -> {metrics_path}, logs -> {log_dir}")
+    print(f"Tasks file: {tasks_file} ({len(tasks)} instances)")
     print(f"Topologies: {args.topologies}")
     print(f"Seeds: {args.seeds} | Drop rates: {args.drop_rates} | "
           f"voting: {'final-only' if args.final_vote_only else 'per-round'}")
@@ -176,6 +196,7 @@ def run_experiments(args):
                             drop_rate=drop_rate,
                             final_vote_only=args.final_vote_only,
                             log_dir=log_dir,
+                            task_type=args.task_type,
                         )
                     except Exception as e:
                         # A single run that exhausts its per-call retries (e.g. a long Gemini
@@ -187,7 +208,7 @@ def run_experiments(args):
                               f"(seed={seed}, drop={drop_rate}) failed, will retry on resume: {e}")
                         failed += 1
                         continue
-                    save_result_incrementally(result, metrics_path)
+                    save_result_incrementally(result, metrics_path, columns)
                     completed.add(_run_key(task["task_id"], topology, seed, drop_rate))
 
     msg = f"\nExperiments complete. ({skipped} run(s) skipped as already done"
@@ -212,6 +233,14 @@ if __name__ == "__main__":
                         help="Vote only after the last round (saves ~N*(R-1) calls; disables per-round curve).")
     parser.add_argument("--no-resume", dest="no_resume", action="store_true",
                         help="Ignore existing metrics.csv and re-run everything (default: skip completed runs).")
+    parser.add_argument("--task-type", dest="task_type", choices=["logic_grid", "fragment"],
+                        default="logic_grid",
+                        help="Task family. 'fragment' = distributed secret-code reconstruction "
+                             "(pure information-flow); defaults to separate tasks/metrics files.")
+    parser.add_argument("--tasks-file", dest="tasks_file", type=str, default=None,
+                        help="Override tasks JSON path (default derived from --task-type).")
+    parser.add_argument("--metrics-file", dest="metrics_file", type=str, default=None,
+                        help="Override metrics CSV path (default derived from --task-type).")
     args = parser.parse_args()
 
     run_experiments(args)
