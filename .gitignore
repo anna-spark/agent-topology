@@ -21,3 +21,6 @@ results/*
 # os stuff
 .DS_Store
 Thumbs.db
+
+# personal / non-project files
+Interview___Questions_Anna_Iskra.pdf
