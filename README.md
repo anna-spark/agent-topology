@@ -31,8 +31,11 @@ the no-communication lower bookend at identical compute budget).
 
 **Replication & rounds.** Each condition can be run across multiple `--seeds`; the seed
 varies both the drawn graph instance (for random/small-world/modular/scale-free) and LLM
-stochasticity, so confidence intervals reflect real variance, not a single graph sample.
-Agents vote after *every* round (not just the last), yielding an accuracy-vs-round curve;
+stochasticity. The shipped results use a single fixed seed (42), so the reported 95%
+confidence intervals are bootstrap over the 25 task instances at that seed — they capture
+task-to-task variance, *not* variance across graph draws. Multi-seed replication (to
+separate graph-instance variance from LLM stochasticity) is left as future work. Agents
+vote after *every* round (not just the last), yielding an accuracy-vs-round curve;
 pass `--final-vote-only` to vote once at the end and save calls.
 
 ## Module layout
