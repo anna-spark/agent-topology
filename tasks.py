@@ -543,7 +543,7 @@ if __name__ == "__main__":
     parser.add_argument("--agents", type=int, default=20, help="Number of agents")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--task-type", dest="task_type", choices=["logic_grid", "fragment"],
-                        default="logic_grid", help="Which task family to generate")
+                        default="fragment", help="Which task family to generate (default)")
     parser.add_argument("--code-len", dest="code_len", type=int, default=None,
                         help="Fragment task: secret-code length (default = n_agents)")
     parser.add_argument("--out", type=str, default=None, help="Output path for tasks JSON")

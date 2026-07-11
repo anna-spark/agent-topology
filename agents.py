@@ -84,7 +84,7 @@ class Agent:
 
     def _call_llm(self, prompt: str, max_tokens: int = 200) -> str:
         # CLEAN RESET: No staggers, no forced delays inside the agent
-        max_retries = 5
+        max_retries = 8
         base_delay = 5.0
         
         for attempt in range(max_retries):
@@ -127,11 +127,14 @@ class Agent:
                     
             except Exception as e:
                 error_str = str(e)
-                is_retryable = ("429" in error_str or "RESOURCE_EXHAUSTED" in error_str or "503" in error_str or "UNAVAILABLE" in error_str)
+                # Empty/None responses are transient (truncation, momentary backend hiccup
+                # under load), so retry them with backoff rather than aborting the whole run.
+                is_retryable = ("429" in error_str or "RESOURCE_EXHAUSTED" in error_str or "503" in error_str or "UNAVAILABLE" in error_str
+                                or "Empty" in error_str)
                 if is_retryable:
                     if attempt == max_retries - 1:
                         raise e
-                    delay = (base_delay * (2 ** attempt)) + random.uniform(1.0, 3.0)
+                    delay = min(base_delay * (2 ** attempt), 60.0) + random.uniform(1.0, 3.0)
                     print(f"\n[API Exception Overridden] Agent {self.agent_id} hit traffic limit. Retrying in {delay:.2f}s...")
                     time.sleep(delay)
                 else:

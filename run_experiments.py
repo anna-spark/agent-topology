@@ -107,7 +107,7 @@ def run_one(
     drop_rate: float = 0.0,
     final_vote_only: bool = False,
     log_dir: Path | None = None,
-    task_type: str = "logic_grid",
+    task_type: str = "fragment",
 ) -> dict:
     """Run one task under one topology (with optional edge-deletion robustness test)."""
     G = get_topology(topology_name, n_agents, seed=seed)
@@ -234,9 +234,10 @@ if __name__ == "__main__":
     parser.add_argument("--no-resume", dest="no_resume", action="store_true",
                         help="Ignore existing metrics.csv and re-run everything (default: skip completed runs).")
     parser.add_argument("--task-type", dest="task_type", choices=["logic_grid", "fragment"],
-                        default="logic_grid",
-                        help="Task family. 'fragment' = distributed secret-code reconstruction "
-                             "(pure information-flow); defaults to separate tasks/metrics files.")
+                        default="fragment",
+                        help="Task family (default). 'fragment' = distributed secret-code "
+                             "reconstruction (pure information-flow); 'logic_grid' = the "
+                             "companion clue puzzle. Each uses separate tasks/metrics files.")
     parser.add_argument("--tasks-file", dest="tasks_file", type=str, default=None,
                         help="Override tasks JSON path (default derived from --task-type).")
     parser.add_argument("--metrics-file", dest="metrics_file", type=str, default=None,

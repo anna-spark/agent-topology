@@ -6,11 +6,11 @@ Loads experiment results and produces figures + tables with statistical uncertai
 Two task families are supported, selected with --task-type (or auto-detected from the
 metrics columns):
 
-  * logic_grid (default) — binary exact-match accuracy. Reads results/metrics.csv,
-    writes results/figures/ and results/*.csv exactly as before.
-  * fragment             — continuous code-recovery score. Reads
+  * fragment (default)   — continuous code-recovery score. Reads
     results/metrics_fragment.csv, writes results/figures_fragment/ and
     results/*_fragment.csv so the two experiments never clobber each other.
+  * logic_grid           — binary exact-match accuracy (companion family). Reads
+    results/metrics.csv, writes results/figures/ and results/*.csv.
 
 The headline outcome metric (binary `correct` vs continuous `collective_recovery`),
 its axis labels, and the baseline reference lines are all carried in an `Outcome`
@@ -156,7 +156,7 @@ def detect_task_type(metrics_path: Path) -> str:
     try:
         cols = pd.read_csv(metrics_path, nrows=0).columns
     except (FileNotFoundError, pd.errors.EmptyDataError):
-        return "logic_grid"
+        return "fragment"
     return "fragment" if "collective_recovery" in cols else "logic_grid"
 
 
@@ -644,7 +644,7 @@ def build_context(task_type: str | None, metrics_arg: str | None) -> Context:
 
     # Resolve task type: explicit flag wins, else sniff the file, else default.
     if task_type is None:
-        sniff_path = metrics_path or Path(DEFAULT_METRICS["logic_grid"])
+        sniff_path = metrics_path or Path(DEFAULT_METRICS["fragment"])
         task_type = detect_task_type(sniff_path)
 
     if metrics_path is None:
