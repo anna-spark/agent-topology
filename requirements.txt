@@ -1,0 +1,9 @@
+anthropic
+python-constraint
+networkx
+numpy
+pandas
+matplotlib
+tqdm
+python-dotenv
+google-genai

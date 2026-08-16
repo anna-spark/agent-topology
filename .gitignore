@@ -1,0 +1,29 @@
+# environment
+.env
+venv/
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# jupyter
+.ipynb_checkpoints/
+
+# results: generated outputs (figures, metrics, logs) are regenerable; keep task instances
+results/*
+!results/tasks.json
+!results/tasks_fragment.json
+
+# claude code local state
+.claude/
+
+# os stuff
+.DS_Store
+Thumbs.db
+
+# personal / non-project files
+Interview___Questions_Anna_Iskra.pdf
+fragment_study_guide.md
+fragment_study_guide.pdf
