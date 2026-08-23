@@ -7,15 +7,15 @@ A controlled prototype testing one question:
 > move information to where it's needed?**
 
 The headline experiment is **fragment**: a distributed secret-code reconstruction task
-that isolates pure *information flow*. `N = 20` identical LLM agents each hold **one
-private `(position, letter)` fragment** of a 20-character secret code. No agent can
+that isolates pure information flow. `N = 20` identical LLM agents each hold one
+private `(position, letter)` fragment of a 20-character secret code. No agent can
 reconstruct the code alone; a fragment can only reach the rest of the swarm by being
 relayed across the communication graph. Agents exchange short messages for `R = 3`
 rounds, then everyone emits their best guess at the full code and the system's answer is
-the **per-position majority vote**. The *only* thing that varies across conditions is the
+the **per-position majority vote**. The only thing that varies across conditions is the
 graph.
 
-Because the outcome is a *continuous* recovery score (the fraction of positions the
+Because the outcome is a continuous recovery score (the fraction of positions the
 majority vote gets right) rather than a binary correct/incorrect, it exposes graded
 differences between topologies that an exact-match metric would flatten to all-or-nothing.
 
@@ -35,14 +35,12 @@ agent handed every fragment):
 | tree | 0.35 | 0.43 | 0.80 | 4.06 | 7 | 43k |
 | chain | 0.00 | 0.32 | 0.35 | 7.00 | 19 | 42k |
 
-Two takeaways from this table:
-
 - Recovery tracks average shortest path length. A fragment can only travel `R` hops, so
   once the graph is wider than `R` rounds can cover (tree, chain), most positions never
   reach a majority.
-- The five dense graphs *tie* at `collective = 1.0`, a ceiling effect. They separate not
-  on the round-3 endpoint but on **convergence speed** (how many rounds to reach 1.0) and
-  **token cost**: `modular` hits the same recovery as `fully_connected` at ~4.6× fewer
+- The five dense graphs tie at `collective = 1.0`, a ceiling effect. They separate not
+  on the round-3 endpoint but on convergence speed (how many rounds to reach 1.0) and
+  token cost: `modular` hits the same recovery as `fully_connected` at ~4.6× fewer
   tokens.
 
 The chain's `collective = 0.00` while `mean = 0.32` is explained by the metric's design;
@@ -54,8 +52,8 @@ Held fixed across every topology: model (`gemini/gemini-2.5-flash-lite`), number
 agents, system + agent prompts (`prompts.py`), number of rounds, max message length,
 final-answer procedure (per-position majority vote), task instances, and random seed. Each
 run records its token usage and LLM-call count so the "fixed budget" assumption can be
-*verified* rather than assumed (`budget_summary_fragment.csv`: `n_llm_calls` is constant
-at **120** across topologies by construction; only context/token *volume* varies).
+verified rather than assumed (`budget_summary_fragment.csv`: `n_llm_calls` is constant
+at 120 across topologies by construction, only context/token volume varies).
 
 ## Topologies (`topologies.py`)
 
@@ -64,14 +62,14 @@ at **120** across topologies by construction; only context/token *volume* varies
 (Barabási–Albert), `fully_connected` (upper-bound baseline), `empty` (no edges,
 the no-communication lower bookend at identical compute budget).
 
-**Replication & rounds.** Each condition can be run across multiple `--seeds`; the seed
+**Replication & rounds** Each condition can be run across multiple `--seeds`, and the seed
 varies both the drawn graph instance (for random/small-world/modular/scale-free) and LLM
 stochasticity. The shipped results use a single fixed seed (42), so the reported 95%
-confidence intervals are bootstrap over the 25 task instances at that seed; they capture
-task-to-task variance, *not* variance across graph draws. Multi-seed replication (to
+confidence intervals are bootstrap over the 25 task instances at that seed. They capture
+task-to-task variance, not variance across graph draws. Multi-seed replication (to
 separate graph-instance variance from LLM stochasticity) is left as future work. Agents
-vote after *every* round (not just the last), yielding a recovery-vs-round curve that is
-what separates the ceiling-tied dense graphs; pass `--final-vote-only` to vote once at the
+vote after every round (not just the last), yielding a recovery-vs-round curve that is
+what separates the ceiling-tied dense graphs. Pass `--final-vote-only` to vote once at the
 end and save calls.
 
 ## Why the chain scores 0.00 (a feature, not a bug)
@@ -79,17 +77,16 @@ end and save calls.
 `collective_recovery` is the recovery of the **per-position majority vote** across all 20
 agents. For any position `p` in a chain, only ~7 agents (those within `R = 3` hops of the
 agent holding `p`) ever learn its letter; the other ~13 still emit `?`. In
-`_position_majority`, `?` **counts as a vote** and only loses to a real letter on an exact
-tie, so every position tallies roughly "letter: 7, `?`: 13", and `?` wins outright: the
+`_position_majority`, `?` counts as a vote and only loses to a real letter on an exact
+tie, so every position tallies roughly "letter: 7, `?`: 13", and `?` wins outright. The
 majority code comes out all-`?`, giving `collective_recovery = 0.0` even though agents near
 each fragment clearly know their letters (`mean_recovery = 0.32`).
 
 This is by design. Excluding `?` from the majority would push the chain to ~1.0 (every
-position is known by someone, with no competing wrong letter), which would erase the
-topology signal we're trying to measure. Counting abstentions is what makes
-`collective_recovery` a **threshold** metric: a fragment must reach a *majority* of agents
+position is known by someone, with no competing wrong letter). Counting abstentions is what makes
+`collective_recovery` a threshold metric: a fragment must reach a majority of agents
 to win its position, which is what separates dense graphs (info floods to a majority) from
-sparse ones (it doesn't).
+sparse ones.
 
 ## Module layout
 
@@ -163,5 +160,5 @@ suffix), so the two never collide.
 - Reproducible: a fixed `--seed` controls graph construction, edge-deletion, and
   vote tie-breaking; LLM calls use `temperature=0.1`.
 - This is a prototype to demonstrate a controlled experiment, not a definitive
-  benchmark. It shows topology *gates information flow under a tight round budget*, not
-  that topology changes agents' *reasoning* ability.
+  benchmark. It shows topology gates information flow under a tight round budget, not
+  that topology changes agents' reasoning ability.
